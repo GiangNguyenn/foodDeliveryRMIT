@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-
+import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
@@ -16,6 +16,7 @@ const firebaseConfig = {
     appId: '1:586872016263:web:786533cb45fb1826c69722',
     measurementId: 'G-3038RMVNHE',
 }
+firebase.apps.length === 0 ? firebase.initializeApp(firebaseConfig) : {}
 
 const Stack = createStackNavigator()
 export default function App() {

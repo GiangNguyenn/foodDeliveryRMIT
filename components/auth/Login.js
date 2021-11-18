@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
-import { View, Button, TextInput } from 'react-native'
+import { View, Button, TextInput, Pressable } from 'react-native'
 import styled from 'styled-components'
 import { landingPageButtons } from '../../style/landing'
 
 import firebase from 'firebase'
-
-const button = styled.Button`
-    ${landingPageButtons}
-`
 
 export class Login extends Component {
     constructor(props) {
@@ -16,13 +12,13 @@ export class Login extends Component {
         this.state = {
             email: '',
             password: '',
+            name: '',
         }
 
         this.onSignUp = this.onSignUp.bind(this)
     }
-
     onSignUp() {
-        const { email, password } = this.state
+        const { email, password} = this.state
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
@@ -47,7 +43,11 @@ export class Login extends Component {
                     onChangeText={(password) => this.setState({ password })}
                 />
 
-                <button onPress={() => this.onSignUp()} title="Sign In" />
+                <Pressable
+                    style={landingPageButtons.button}
+                    onPress={() => this.onSignUp()}
+                    title="Sign In"
+                />
             </View>
         )
     }
