@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import styled, { css } from 'styled-components'
 import { themeColor } from './constants'
 
-export const landingPageButtons = StyleSheet.create({
+export const landingPage = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -19,5 +19,10 @@ export const landingPageButtons = StyleSheet.create({
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: 'white',
+    },
+    view: {
+        backgroundColor: themeColor.RMITLightBlue,
+        flex: 1,
+        justifyContent: 'center',
     },
 })
