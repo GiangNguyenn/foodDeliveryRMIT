@@ -1,10 +1,14 @@
 import React from 'react'
-import { Text, View, Button, Pressable } from 'react-native'
+import { Text, View, Button, Pressable, Image } from 'react-native'
 import { landingPage } from '../../style/landing'
 
 export default function Landing({ navigation }) {
     return (
         <View style={landingPage.view}>
+            <Image
+                style={landingPage.canteenIcon}
+                source={require('../../assets/RMIT/canteenIcon.png')}
+            />
             <Pressable
                 style={landingPage.button}
                 onPress={() => navigation.navigate('Register')}
@@ -20,3 +24,4 @@ export default function Landing({ navigation }) {
         </View>
     )
 }
+
