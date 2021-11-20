@@ -10,8 +10,8 @@ export const landingPage = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         backgroundColor: themeColor.RMITRed,
-        color: 'white',
         margin: '10%',
+        position: 'relative',
     },
     text: {
         fontSize: 16,
@@ -21,8 +21,16 @@ export const landingPage = StyleSheet.create({
         color: 'white',
     },
     view: {
-        backgroundColor: themeColor.RMITLightBlue,
+        backgroundColor: 'white',
+        justifyContent: 'space-evenly',
+        position: 'relative',
+        display: 'flex',
         flex: 1,
-        justifyContent: 'center',
+    },
+    canteenIcon: {
+        width: '80%',
+        height: '50%',
+        resizeMode: 'contain',
+        alignSelf: 'center',
     },
 })
