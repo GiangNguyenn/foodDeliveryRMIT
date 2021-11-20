@@ -1,12 +1,19 @@
 import React, { Component } from 'react'
-import { View, Button, TextInput, Pressable } from 'react-native'
-import styled from 'styled-components'
-import { landingPageButtons } from '../../style/landing'
-
+import {
+    View,
+    Button,
+    TextInput,
+    Pressable,
+    SafeAreaView,
+    Image,
+    Text,
+    StyleSheet,
+} from 'react-native'
+import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
-
+import { themeColor } from '../../style/constants'
 export class Login extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props)
 
         this.state = {
@@ -17,40 +24,68 @@ export class Login extends Component {
 
         this.onSignUp = this.onSignUp.bind(this)
     }
-    onSignUp() {
-        const { email, password} = this.state
+    onSignUp () {
+        const { email, password } = this.state
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then((result) => {
+            .then(result => {
                 console.log(result)
+                alert(result)
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error)
             })
     }
 
-    render() {
+    render () {
         return (
-            <View>
+            <View style={landingPage.container}>
+                <Image
+                    style={landingPage.canteenIcon}
+                    source={require('../../assets/RMIT/canteenIcon.png')}
+                />
+                <Text
+                    onPress={() => this.props.navigation.navigate('login')}
+                    style={landingPage.title}
+                >
+                    Login Form
+                </Text>
                 <TextInput
-                    placeholder="email"
-                    onChangeText={(email) => this.setState({ email })}
+                    style={landingPage.input}
+                    placeholder='email'
+                    onChangeText={email => this.setState({ email })}
+                    textContentType='emailAddress'
                 />
                 <TextInput
-                    placeholder="password"
+                    style={landingPage.input}
+                    placeholder='password'
                     secureTextEntry={true}
-                    onChangeText={(password) => this.setState({ password })}
+                    onChangeText={password => this.setState({ password })}
+                    textContentType='password'
                 />
 
+                <Text
+                    onPress={() => this.props.navigation.navigate('signup')}
+                    style={landingPage.C2AText}
+                >
+                    Do not have account? Register now!
+                </Text>
                 <Pressable
-                    style={landingPageButtons.button}
+                    style={landingPage.button}
                     onPress={() => this.onSignUp()}
-                    title="Sign In"
-                />
+                >
+                    <Text style={landingPage.text}>Log In</Text>
+                </Pressable>
             </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    registerText: {
+        color: themeColor.RMITDarkBlue,
+        padding: 5,
+    },
+})
 
 export default Login
