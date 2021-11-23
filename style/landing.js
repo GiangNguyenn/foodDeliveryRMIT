@@ -31,8 +31,6 @@ export const landingPage = StyleSheet.create({
         width: '80%',
         height: '50%',
         resizeMode: 'contain',
-        alignSelf:'center'
+        alignSelf: 'center',
     },
 })
-
-

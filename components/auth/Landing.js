@@ -11,7 +11,7 @@ export default function Landing({ navigation }) {
             />
             <Pressable
                 style={landingPage.button}
-                onPress={() => navigation.navigate('Register')}
+                onPress={() => navigation.navigate('Signup')}
             >
                 <Text style={landingPage.text}>Sign Up</Text>
             </Pressable>
