@@ -9,6 +9,7 @@ import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
 import { SignUp } from './components/auth/Signup'
 import RestaurantListing from './components/restaurant/RestaurantListing'
+
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
     authDomain: 'rmit-canteen.firebaseapp.com',
