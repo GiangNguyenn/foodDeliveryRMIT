@@ -15,6 +15,7 @@ import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
 import { addToCollection } from '../../backend/add'
 import { ScrollView } from 'react-native-gesture-handler'
+
 export class SignUp extends Component {
     constructor(props) {
         super(props)
@@ -80,7 +81,10 @@ export class SignUp extends Component {
 
     render() {
         return (
-            <View style={landingPage.container}>
+            <ScrollView
+                scrollEnabled
+                contentContainerStyle={landingPage.container}
+            >
                 <Image
                     style={landingPage.canteenIcon}
                     source={require('../../assets/RMIT/canteenIcon.png')}
@@ -145,7 +149,7 @@ export class SignUp extends Component {
                 >
                     <Text style={landingPage.text}>Register</Text>
                 </Pressable>
-            </View>
+            </ScrollView>
         )
     }
 }
