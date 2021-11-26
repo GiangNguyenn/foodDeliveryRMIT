@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
-import { View, Button, TextInput, Pressable } from 'react-native'
-import styled from 'styled-components'
+import {
+    View,
+    Button,
+    TextInput,
+    Pressable,
+    SafeAreaView,
+    Image,
+    Text,
+    StyleSheet,
+} from 'react-native'
 import { landingPage } from '../../style/landing'
-
 import firebase from 'firebase'
-
-class Login extends Component {
+import { themeColor } from '../../style/constants'
+export class Login extends Component {
     constructor(props) {
         super(props)
 
@@ -24,6 +31,7 @@ class Login extends Component {
             .signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result)
+                alert(result)
             })
             .catch((error) => {
                 console.log(error)
@@ -32,25 +40,52 @@ class Login extends Component {
 
     render() {
         return (
-            <View>
+            <View style={landingPage.container}>
+                <Image
+                    style={landingPage.canteenIcon}
+                    source={require('../../assets/RMIT/canteenIcon.png')}
+                />
+                <Text
+                    onPress={() => this.props.navigation.navigate('login')}
+                    style={landingPage.title}
+                >
+                    Login Form
+                </Text>
                 <TextInput
+                    style={landingPage.input}
                     placeholder="email"
                     onChangeText={(email) => this.setState({ email })}
+                    textContentType="emailAddress"
                 />
                 <TextInput
+                    style={landingPage.input}
                     placeholder="password"
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password })}
+                    textContentType="password"
                 />
 
+                <Text
+                    onPress={() => this.props.navigation.navigate('signup')}
+                    style={landingPage.C2AText}
+                >
+                    Do not have account? Register now!
+                </Text>
                 <Pressable
                     style={landingPage.button}
                     onPress={() => this.onSignUp()}
-                    title="Sign In"
-                />
+                >
+                    <Text style={landingPage.text}>Log In</Text>
+                </Pressable>
             </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    registerText: {
+        color: themeColor.RMITDarkBlue,
+        padding: 5,
+    },
+})
 
 export default Login

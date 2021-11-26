@@ -1,5 +1,12 @@
 import React from 'react'
-import { Text, View, Button, Pressable, Image } from 'react-native'
+import {
+    Text,
+    View,
+    Button,
+    Pressable,
+    Image,
+    SafeAreaView,
+} from 'react-native'
 import { landingPage } from '../../style/landing'
 
 export default function Landing({ navigation }) {
@@ -11,17 +18,16 @@ export default function Landing({ navigation }) {
             />
             <Pressable
                 style={landingPage.button}
-                onPress={() => navigation.navigate('Signup')}
+                onPress={() => navigation.navigate('signup')}
             >
                 <Text style={landingPage.text}>Sign Up</Text>
             </Pressable>
             <Pressable
                 style={landingPage.button}
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate('login')}
             >
                 <Text style={landingPage.text}>Log In</Text>
             </Pressable>
         </View>
     )
 }
-
