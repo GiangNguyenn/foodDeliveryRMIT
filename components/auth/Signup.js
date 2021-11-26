@@ -13,11 +13,10 @@ import {
 } from 'react-native'
 import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
-import { themeColor } from '../../style/constants'
 import { addToCollection } from '../../backend/add'
 import { ScrollView } from 'react-native-gesture-handler'
 export class SignUp extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             email: '',
@@ -29,11 +28,11 @@ export class SignUp extends Component {
         }
         this.onSignUp = this.onSignUp.bind(this)
     }
-    navigateToLogin () {
+    navigateToLogin() {
         this.props.navigation.navigate('login')
     }
 
-    onSignUp () {
+    onSignUp() {
         const { email, password, phone, name, studentId } = this.state
         if (this.isMatched()) {
             firebase
@@ -54,7 +53,7 @@ export class SignUp extends Component {
                         { cancelable: true }
                     )
                 })
-                .catch(error => {
+                .catch((error) => {
                     if (error.code === 'auth/email-already-in-use') {
                         Alert.alert(
                             'resgister',
@@ -71,7 +70,7 @@ export class SignUp extends Component {
                 })
         }
     }
-    isMatched () {
+    isMatched() {
         if (this.state.password !== this.state.confirmation) {
             Alert.alert('Error', 'Password does not match')
             return false
@@ -79,7 +78,7 @@ export class SignUp extends Component {
         return true
     }
 
-    render () {
+    render() {
         return (
             <View style={landingPage.container}>
                 <Image
@@ -95,44 +94,44 @@ export class SignUp extends Component {
                 </Text>
                 <TextInput
                     style={landingPage.input}
-                    placeholder='email'
-                    onChangeText={email => this.setState({ email })}
+                    placeholder="email"
+                    onChangeText={(email) => this.setState({ email })}
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='password'
+                    placeholder="password"
                     secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })}
+                    onChangeText={(password) => this.setState({ password })}
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='Confirm your password'
+                    placeholder="Confirm your password"
                     secureTextEntry={true}
-                    onChangeText={confirmation =>
+                    onChangeText={(confirmation) =>
                         this.setState({ confirmation })
                     }
-                    textContentType='password'
+                    textContentType="password"
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='Full Name'
+                    placeholder="Full Name"
                     secureTextEntry={true}
-                    onChangeText={name => this.setState({ name })}
-                    textContentType='name'
+                    onChangeText={(name) => this.setState({ name })}
+                    textContentType="name"
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='Phone Number'
+                    placeholder="Phone Number"
                     secureTextEntry={true}
-                    onChangeText={phone => this.setState({ phone })}
-                    textContentType='telephoneNumber'
+                    onChangeText={(phone) => this.setState({ phone })}
+                    textContentType="telephoneNumber"
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='Your Student ID'
+                    placeholder="Your Student ID"
                     secureTextEntry={true}
-                    onChangeText={studentId => this.setState({ studentId })}
-                    textContentType='nickname'
+                    onChangeText={(studentId) => this.setState({ studentId })}
+                    textContentType="nickname"
                 />
                 <Text
                     onPress={() => this.props.navigation.navigate('login')}

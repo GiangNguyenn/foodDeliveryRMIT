@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { landingPage } from '../../style/landing'
 
-export default function Landing ({ navigation }) {
+export default function Landing({ navigation }) {
     return (
         <View style={landingPage.view}>
             <Image

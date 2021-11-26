@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import { landingPage } from '../../style/landing'
 
-export default function RestaurantListing ({ navigation }) {
+export default function RestaurantListing({ navigation }) {
     return (
         <View style={landingPage.view}>
             <Text> Restaurant works </Text>
