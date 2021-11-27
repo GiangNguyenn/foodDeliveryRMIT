@@ -33,10 +33,10 @@ export class SignUp extends Component {
         this.props.navigation.navigate('login')
     }
 
-    onSignUp() {
+    async onSignUp() {
         const { email, password, phone, name, studentId } = this.state
         if (this.isMatched()) {
-            firebase
+            await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
@@ -115,27 +115,6 @@ export class SignUp extends Component {
                         this.setState({ confirmation })
                     }
                     textContentType="password"
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="Full Name"
-                    secureTextEntry={true}
-                    onChangeText={(name) => this.setState({ name })}
-                    textContentType="name"
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="Phone Number"
-                    secureTextEntry={true}
-                    onChangeText={(phone) => this.setState({ phone })}
-                    textContentType="telephoneNumber"
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="Your Student ID"
-                    secureTextEntry={true}
-                    onChangeText={(studentId) => this.setState({ studentId })}
-                    textContentType="nickname"
                 />
                 <Text
                     onPress={() => this.props.navigation.navigate('login')}

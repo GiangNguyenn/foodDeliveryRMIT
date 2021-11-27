@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { useState, useEffect } from 'react'
 import { AsyncStorage } from 'react-native'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -8,7 +6,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
 import { SignUp } from './components/auth/Signup'
-import RestaurantListing from './components/restaurant/RestaurantListing'
+import { RestaurantListing } from './components/restaurant/RestaurantListing'
+import { LogBox } from 'react-native'
+LogBox.ignoreLogs(['Setting a timer'])
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
     authDomain: 'rmit-canteen.firebaseapp.com',
