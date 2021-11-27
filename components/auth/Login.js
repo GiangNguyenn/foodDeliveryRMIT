@@ -31,10 +31,11 @@ export class Login extends Component {
             .signInWithEmailAndPassword(email, password)
             .then(result => {
                 console.log(result)
-                alert(result)
+                this.props.navigation.navigate('restaurant-listing')
+
             })
             .catch(error => {
-                console.log(error)
+                alert(error)
             })
     }
 

@@ -21,6 +21,7 @@
         "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
         "react-native-gesture-handler": "~1.10.2",
         "react-native-screens": "^3.9.0",
+        "react-native-vector-icons": "^9.0.0",
         "react-native-web": "^0.17.5",
         "styled-components": "^5.3.3"
     },
