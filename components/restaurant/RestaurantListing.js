@@ -1,17 +1,9 @@
 import React, { Component } from 'react'
-import {
-    Text,
-    View,
-    Button,
-    Pressable,
-    Image,
-    SafeAreaView,
-    TouchableOpacity,
-} from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { getAllDocuments } from '../../backend/get'
 import RestaurantImage from './RestaurantImage'
 import RestaurantInfo from './RestaurantInfor'
-import { landingPage } from '../../style/landing'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export class RestaurantListing extends Component {
     _isMounted = false
@@ -39,15 +31,17 @@ export class RestaurantListing extends Component {
                 key={index}
                 activeOpacity={1}
                 style={{ marginBottom: 30 }}
-                // onPress={() =>
-                //     this.props.navigation.navigate('RestaurantDetail', {
-                //         name: restaurant.name,
-                //         image: restaurant.imageUrl,
-                //         rating: restaurant.rating,
-                //         introduction: restaurant.introduction,
-                //         meals: restaurant.meals,
-                //     })
-                // }
+                onPress={() =>
+                    this.props.navigation.navigate('restaurant-detail', {
+                        name: restaurant.name,
+                        categories: restaurant.categories,
+                        id: restaurant.id,
+                        imageUrl: restaurant.imageUrl,
+                        rating: restaurant.rating,
+                        introduction: restaurant.introduction,
+                        meals: restaurant.meals,
+                    })
+                }
             >
                 <View
                     style={{
@@ -69,6 +63,6 @@ export class RestaurantListing extends Component {
                 </View>
             </TouchableOpacity>
         ))
-        return <View>{a}</View>
+        return <ScrollView>{a}</ScrollView>
     }
 }

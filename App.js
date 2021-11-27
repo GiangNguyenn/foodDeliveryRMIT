@@ -7,6 +7,7 @@ import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
 import { SignUp } from './components/auth/Signup'
 import { RestaurantListing } from './components/restaurant/RestaurantListing'
+import { RestaurantDetail } from './components/restaurant/restaurant-detail/RestaurantDetail'
 import { LogBox } from 'react-native'
 LogBox.ignoreLogs(['Setting a timer'])
 const firebaseConfig = {
@@ -56,6 +57,11 @@ export default function App() {
                 <Stack.Screen
                     name="restaurant-listing"
                     component={RestaurantListing}
+                    options={{ headerShown: false }}
+                ></Stack.Screen>
+                <Stack.Screen
+                    name="restaurant-detail"
+                    component={RestaurantDetail}
                     options={{ headerShown: false }}
                 ></Stack.Screen>
             </Stack.Navigator>
