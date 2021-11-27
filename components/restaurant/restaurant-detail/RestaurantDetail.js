@@ -22,7 +22,6 @@ export class RestaurantDetail extends Component {
         if (this._isMounted) {
             this.setState({ products: fetchedProducts })
         }
-        console.log(fetchedProducts)
     }
     componentWillUnmount() {
         this._isMounted = false
