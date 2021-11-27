@@ -40,7 +40,7 @@ export class SignUp extends Component {
                 .auth()
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
-                    addToCollection('user', { email, phone, name, studentId })
+                    addToCollection('user', { email, phone })
                     Alert.alert(
                         'resgister',
                         'User account created & signed in!',
@@ -81,6 +81,7 @@ export class SignUp extends Component {
 
     render () {
         return (
+
             <View style={landingPage.container}>
                 <Image
                     style={landingPage.canteenIcon}
@@ -113,14 +114,13 @@ export class SignUp extends Component {
                     }
                     textContentType='password'
                 />
-                <TextInput
+                {/* <TextInput
                     style={landingPage.input}
                     placeholder='Full Name'
                     secureTextEntry={true}
                     onChangeText={name => this.setState({ name })}
-                    textContentType='name'
-                />
-                <TextInput
+                /> */}
+                {/* <TextInput
                     style={landingPage.input}
                     placeholder='Phone Number'
                     secureTextEntry={true}
@@ -133,7 +133,7 @@ export class SignUp extends Component {
                     secureTextEntry={true}
                     onChangeText={studentId => this.setState({ studentId })}
                     textContentType='nickname'
-                />
+                /> */}
                 <Text
                     onPress={() => this.props.navigation.navigate('login')}
                     style={landingPage.C2AText}
@@ -147,6 +147,7 @@ export class SignUp extends Component {
                     <Text style={landingPage.text}>Register</Text>
                 </Pressable>
             </View>
+
         )
     }
 }
