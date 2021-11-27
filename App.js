@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { useState, useEffect } from 'react'
 import { AsyncStorage } from 'react-native'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'

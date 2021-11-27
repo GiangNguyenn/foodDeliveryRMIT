@@ -13,7 +13,7 @@ import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
 import { themeColor } from '../../style/constants'
 export class Login extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -24,22 +24,21 @@ export class Login extends Component {
 
         this.onSignUp = this.onSignUp.bind(this)
     }
-    onSignUp () {
+    onSignUp() {
         const { email, password } = this.state
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then(result => {
+            .then((result) => {
                 console.log(result)
                 this.props.navigation.navigate('restaurant-listing')
-
             })
-            .catch(error => {
+            .catch((error) => {
                 alert(error)
             })
     }
 
-    render () {
+    render() {
         return (
             <View style={landingPage.container}>
                 <Image
@@ -54,16 +53,16 @@ export class Login extends Component {
                 </Text>
                 <TextInput
                     style={landingPage.input}
-                    placeholder='email'
-                    onChangeText={email => this.setState({ email })}
-                    textContentType='emailAddress'
+                    placeholder="email"
+                    onChangeText={(email) => this.setState({ email })}
+                    textContentType="emailAddress"
                 />
                 <TextInput
                     style={landingPage.input}
-                    placeholder='password'
+                    placeholder="password"
                     secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })}
-                    textContentType='password'
+                    onChangeText={(password) => this.setState({ password })}
+                    textContentType="password"
                 />
 
                 <Text
