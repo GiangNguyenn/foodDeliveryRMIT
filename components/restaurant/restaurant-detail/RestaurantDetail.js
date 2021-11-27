@@ -29,7 +29,6 @@ export class RestaurantDetail extends Component {
     }
 
     render() {
-        console.log('propssssssssssssssssss', this.props)
         return this.props ? (
             <ScrollView>
                 <About

@@ -19,7 +19,6 @@ export function FoodInfo(props) {
 }
 
 export function FoodImage({ marginLeft, ...props }) {
-    console.log('props from child image ', props)
     return (
         <View>
             <Image
