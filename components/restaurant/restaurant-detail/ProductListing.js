@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { FoodInfo, FoodImage } from './ProductInfo'
+
 const styles = StyleSheet.create({
     menuItemStyle: {
         flexDirection: 'row',

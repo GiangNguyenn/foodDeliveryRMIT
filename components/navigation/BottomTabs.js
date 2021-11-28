@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component, useRef } from 'react'
 import {
     Alert,
     Animated,
@@ -8,17 +8,27 @@ import {
 } from 'react-native'
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { UserProfile } from '../profile/UserProfile'
+import { SearchEngine } from '../search/SearchEngine'
+import Transaction from '../transaction/Transaction'
+import Orders from '../order/Orders'
 
-export const tabBar = () => {
+export const BottomTabs = () => {
     const _renderIcon = (routeName, selectedTab) => {
         let icon = ''
 
         switch (routeName) {
-            case 'title1':
-                icon = 'ios-home-outline'
+            case 'Home':
+                icon = 'home-outline'
                 break
-            case 'title2':
-                icon = 'settings-outline'
+            case 'Profile':
+                icon = 'person-outline'
+                break
+            case 'Transactions':
+                icon = 'wallet-outline'
+                break
+            case 'Orders':
+                icon = 'reorder-four-outline'
                 break
         }
 
@@ -26,52 +36,11 @@ export const tabBar = () => {
             <Ionicons
                 name={icon}
                 size={25}
-                color={routeName === selectedTab ? 'black' : 'gray'}
+                color={routeName === selectedTab ? 'red' : 'black'}
             />
         )
     }
-}
-
-export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    button: {
-        marginVertical: 5,
-    },
-    bottomBar: {},
-    btnCircle: {
-        width: 60,
-        height: 60,
-        borderRadius: 35,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        padding: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 0.5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 1,
-        bottom: 30,
-    },
-    imgCircle: {
-        width: 30,
-        height: 30,
-        tintColor: 'gray',
-    },
-    img: {
-        width: 30,
-        height: 30,
-    },
-})
-
-export class BottomTabs extends Component {
-    renderTabBar = (routeName, selectedTab, navigate) => {
+    const renderTabBar = ({ routeName, selectedTab, navigate }) => {
         return (
             <TouchableOpacity
                 onPress={() => navigate(routeName)}
@@ -86,64 +55,97 @@ export class BottomTabs extends Component {
         )
     }
 
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <CurvedBottomBar.Navigator
-                    style={styles.bottomBar}
-                    strokeWidth={0.5}
-                    height={55}
-                    circleWidth={55}
-                    bgColor="white"
-                    initialRouteName="title1"
-                    borderTopLeftRight
-                    swipeEnabled
-                    renderCircle={({ selectedTab, navigate }) => (
-                        <Animated.View style={styles.btnCircle}>
-                            <TouchableOpacity
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                }}
-                                onPress={() => Alert.alert('Click Action')}
-                            >
-                                <Ionicons
-                                    name={'apps-sharp'}
-                                    color="gray"
-                                    size={25}
-                                />
-                            </TouchableOpacity>
-                        </Animated.View>
-                    )}
-                    tabBar={renderTabBar}
-                >
-                    <CurvedBottomBar.Screen
-                        name="title1"
-                        position="left"
-                        component={({ navigate }) => (
-                            <View
-                                style={{
-                                    backgroundColor: '#BFEFFF',
-                                    flex: 1,
-                                }}
+    return (
+        <View style={{ flex: 1 }}>
+            <CurvedBottomBar.Navigator
+                type="up"
+                style={styles.bottomBar}
+                strokeWidth={0.5}
+                height={55}
+                circleWidth={55}
+                bgColor="white"
+                initialRouteName="Home"
+                borderTopLeftRight
+                swipeEnabled
+                renderCircle={({ selectedTab, navigate }) => (
+                    <Animated.View style={styles.btnCircleUp}>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                            }}
+                            onPress={() => Alert.alert('Click Action')}
+                        >
+                            <Ionicons
+                                name={'search-outline'}
+                                color="red"
+                                size={25}
                             />
-                        )}
-                    />
-                    <CurvedBottomBar.Screen
-                        name="title2"
-                        component={({ navigate }) => (
-                            <View
-                                style={{
-                                    backgroundColor: '#FFEBCD',
-                                    flex: 1,
-                                }}
-                            />
-                        )}
-                        position="right"
-                    />
-                </CurvedBottomBar.Navigator>
-            </View>
-        )
-    }
+                        </TouchableOpacity>
+                    </Animated.View>
+                )}
+                tabBar={renderTabBar}
+            >
+                <CurvedBottomBar.Screen
+                    name="Home"
+                    position="left"
+                    component={({ navigate }) => SearchEngine}
+                />
+                <CurvedBottomBar.Screen
+                    name="Orders"
+                    component={({ navigate }) => Orders}
+                    position="left"
+                />
+                <CurvedBottomBar.Screen
+                    name="Transactions"
+                    component={({ navigate }) => Transaction}
+                    position="right"
+                />
+                <CurvedBottomBar.Screen
+                    name="Profile"
+                    component={({ navigate }) => UserProfile}
+                    position="right"
+                />
+            </CurvedBottomBar.Navigator>
+        </View>
+    )
 }
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+    },
+    button: {
+        marginVertical: 5,
+    },
+    bottomBar: {},
+    btnCircleUp: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        bottom: 18,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+        elevation: 1,
+    },
+    imgCircle: {
+        width: 30,
+        height: 30,
+        tintColor: 'gray',
+    },
+    img: {
+        width: 30,
+        height: 30,
+    },
+})
+
 export default BottomTabs

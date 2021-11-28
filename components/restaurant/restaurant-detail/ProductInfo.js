@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 
 import { View, Text, Image, StyleSheet } from 'react-native'
+
+
 const styles = StyleSheet.create({
     titleStyle: {
         fontSize: 19,
