@@ -4,7 +4,6 @@ import { View, Text, Image } from 'react-native'
 export default function About(props) {
     const { name, imageUrl, rating, categories, introduction } = props
     const formattedCategories = categories.map((cat) => cat.title).join(' • ')
-    console.log(formattedCategories)
 
     const description = `${formattedCategories} ${rating} ⭐`
     return (
