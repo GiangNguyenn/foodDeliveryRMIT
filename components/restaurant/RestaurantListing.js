@@ -65,10 +65,7 @@ export class RestaurantListing extends Component {
             </TouchableOpacity>
         ))
         return (
-            <SafeAreaView>
                 <ScrollView>{a}</ScrollView>
-                <BottomTabs />
-            </SafeAreaView>
         )
     }
 }
