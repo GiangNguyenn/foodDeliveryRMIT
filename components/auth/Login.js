@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import {
     View,
-    Button,
-    TextInput,
-    Pressable,
-    SafeAreaView,
     Image,
     Text,
     StyleSheet,
 } from 'react-native'
+import { TextInput, Button } from 'react-native-paper'
 import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
 import { themeColor } from '../../style/constants'
@@ -52,12 +49,14 @@ export class Login extends Component {
                     Login Form
                 </Text>
                 <TextInput
+                    activeUnderlineColor="red"
                     style={landingPage.input}
                     placeholder="email"
                     onChangeText={(email) => this.setState({ email })}
                     textContentType="emailAddress"
                 />
                 <TextInput
+                    activeUnderlineColor="red"
                     style={landingPage.input}
                     placeholder="password"
                     secureTextEntry={true}
@@ -71,12 +70,12 @@ export class Login extends Component {
                 >
                     Do not have account? Register now!
                 </Text>
-                <Pressable
+                <Button
                     style={landingPage.button}
                     onPress={() => this.onSignUp()}
                 >
                     <Text style={landingPage.text}>Log In</Text>
-                </Pressable>
+                </Button>
             </View>
         )
     }

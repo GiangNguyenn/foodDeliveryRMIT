@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import {
     View,
-    Button,
-    TextInput,
-    Pressable,
     SafeAreaView,
     Image,
     Text,
     StyleSheet,
     Alert,
-    AsyncStorage,
 } from 'react-native'
+import { TextInput, Button } from 'react-native-paper'
 import { landingPage } from '../../style/landing'
 import firebase from 'firebase'
 import { addToCollection } from '../../backend/add'
@@ -97,17 +94,20 @@ export class SignUp extends Component {
                     Register Form
                 </Text>
                 <TextInput
+                    activeUnderlineColor="red"
                     style={landingPage.input}
                     placeholder="email"
                     onChangeText={(email) => this.setState({ email })}
                 />
                 <TextInput
+                    activeUnderlineColor="red"
                     style={landingPage.input}
                     placeholder="password"
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password })}
                 />
                 <TextInput
+                    activeUnderlineColor="red"
                     style={landingPage.input}
                     placeholder="Confirm your password"
                     secureTextEntry={true}
@@ -122,12 +122,12 @@ export class SignUp extends Component {
                 >
                     Already have account? Login now!
                 </Text>
-                <Pressable
+                <Button
                     style={landingPage.button}
                     onPress={() => this.onSignUp()}
                 >
                     <Text style={landingPage.text}>Register</Text>
-                </Pressable>
+                </Button>
             </ScrollView>
         )
     }

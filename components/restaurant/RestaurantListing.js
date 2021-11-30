@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, SafeAreaView } from 'react-native'
 import { getAllDocuments } from '../../backend/get'
 import RestaurantImage from './RestaurantImage'
 import RestaurantInfo from './RestaurantInfor'

@@ -1,12 +1,6 @@
 import React from 'react'
-import {
-    Text,
-    View,
-    Button,
-    Pressable,
-    Image,
-    SafeAreaView,
-} from 'react-native'
+import { Text, View, Image, SafeAreaView } from 'react-native'
+import { Button, Card } from 'react-native-paper'
 import { landingPage } from '../../style/landing'
 
 export default function Landing({ navigation }) {
@@ -16,18 +10,20 @@ export default function Landing({ navigation }) {
                 style={landingPage.canteenIcon}
                 source={require('../../assets/RMIT/canteenIcon.png')}
             />
-            <Pressable
+            <Button
                 style={landingPage.button}
+                mode="contained"
                 onPress={() => navigation.navigate('signup')}
             >
-                <Text style={landingPage.text}>Sign Up</Text>
-            </Pressable>
-            <Pressable
+                Sign Up
+            </Button>
+            <Button
                 style={landingPage.button}
+                mode="contained"
                 onPress={() => navigation.navigate('login')}
             >
-                <Text style={landingPage.text}>Log In</Text>
-            </Pressable>
+                Log In
+            </Button>
         </View>
     )
 }
