@@ -1,9 +1,11 @@
-import React from 'react'
-import { AsyncStorage } from '@react-native-async-storage/async-storage'
+import React, { Component } from 'react'
+import { View, Text, LogBox} from 'react-native'
+// import { AsyncStorage } from '@react-native-async-storage/async-storage'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
+
 import { Home } from './Home'
 import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
@@ -12,9 +14,8 @@ import { RestaurantListing } from './components/restaurant/RestaurantListing'
 import { RestaurantDetail } from './components/restaurant/restaurant-detail/RestaurantDetail'
 import { UserProfile } from './components/profile/UserProfile'
 import { SearchEngine } from './components/search/SearchEngine'
-import { LogBox } from 'react-native'
 
-LogBox.ignoreLogs(['Setting a timer'])
+LogBox.ignoreAllLogs()
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
@@ -28,14 +29,14 @@ const firebaseConfig = {
 
 firebase.apps.length === 0 ? firebase.initializeApp(firebaseConfig) : {}
 
-const getCache = async (key) => {
-    try {
-        let value = await AsyncStorage.getItem(key)
-        return value
-    } catch (e) {
-        console.log('caught error', e)
-    }
-}
+// const getCache = async (key) => {
+//     try {
+//         let value = await AsyncStorage.getItem(key)
+//         return value
+//     } catch (e) {
+//         console.log('caught error', e)
+//     }
+// }
 
 const AppStack = createStackNavigator()
 const RootStack = createStackNavigator()
@@ -123,31 +124,37 @@ export class App extends Component {
     render() {
         const { loggedIn, loaded } = this.state
 
-        !loaded ? (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Text>Loading</Text>
-            </View>
-        ) : (
-            {}
-        )
-        loggedIn ? (
-            <NavigationContainer>
-                <RootStack.Navigator>
-                    <RootStack.Screen
-                        name="App"
-                        component={AppStackScreen}
-                        options={{ headerShown: false }}
-                    ></RootStack.Screen>
-                </RootStack.Navigator>
-            </NavigationContainer>
-        ) : (
+        // if (!loaded) {
+        //     return (
+        //         <View style={{ flex: 1, justifyContent: 'center' }}>
+        //             <Text>Loading</Text>
+        //         </View>
+        //     )
+        // }
+
+        if (!loggedIn) {
+            return (
+                <NavigationContainer>
+                    <RootStack.Navigator>
+                        <RootStack.Screen
+                            name="App"
+                            component={AppStackScreen}
+                            options={{ headerShown: false }}
+                        ></RootStack.Screen>
+                    </RootStack.Navigator>
+                </NavigationContainer>
+            )
+        }
+
+        return (
             <NavigationContainer>
                 <RootStack.Screen
                     name="Auth"
                     component={AuthStackScreen}
                     options={{ headerShown: false }}
-                ></RootStack.Screen>{' '}
+                ></RootStack.Screen>
             </NavigationContainer>
         )
     }
 }
+export default App
