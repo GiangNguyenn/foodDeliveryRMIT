@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { AsyncStorage } from '@react-native-async-storage/async-storage'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -13,7 +13,7 @@ import { RestaurantDetail } from './components/restaurant/restaurant-detail/Rest
 import { UserProfile } from './components/profile/UserProfile'
 import { SearchEngine } from './components/search/SearchEngine'
 import { LogBox } from 'react-native'
-
+import { View, Text } from 'react-native'
 LogBox.ignoreLogs(['Setting a timer'])
 
 const firebaseConfig = {
@@ -96,11 +96,12 @@ const AppStackScreen = () => (
     </AppStack.Navigator>
 )
 
-export class App extends Component {
+export default class App extends Component {
     constructor(props) {
         super()
         this.state = {
-            loaded: false,
+            loaded: true,
+            loggedIn: false,
         }
     }
 
@@ -122,32 +123,29 @@ export class App extends Component {
 
     render() {
         const { loggedIn, loaded } = this.state
-
-        !loaded ? (
+        return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Text>Loading</Text>
+                {!loaded ? <Text>Loading</Text> : null}
+                {loggedIn ? (
+                    <NavigationContainer>
+                        <RootStack.Navigator>
+                            <RootStack.Screen
+                                name="App"
+                                component={AppStackScreen}
+                                options={{ headerShown: false }}
+                            ></RootStack.Screen>
+                        </RootStack.Navigator>
+                    </NavigationContainer>
+                ) : (
+                    <NavigationContainer>
+                        <RootStack.Screen
+                            name="Auth"
+                            component={AuthStackScreen}
+                            options={{ headerShown: false }}
+                        ></RootStack.Screen>
+                    </NavigationContainer>
+                )}
             </View>
-        ) : (
-            {}
-        )
-        loggedIn ? (
-            <NavigationContainer>
-                <RootStack.Navigator>
-                    <RootStack.Screen
-                        name="App"
-                        component={AppStackScreen}
-                        options={{ headerShown: false }}
-                    ></RootStack.Screen>
-                </RootStack.Navigator>
-            </NavigationContainer>
-        ) : (
-            <NavigationContainer>
-                <RootStack.Screen
-                    name="Auth"
-                    component={AuthStackScreen}
-                    options={{ headerShown: false }}
-                ></RootStack.Screen>{' '}
-            </NavigationContainer>
         )
     }
 }
