@@ -4,7 +4,8 @@ import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
-import { Home } from './Home'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
 import { SignUp } from './components/auth/Signup'
@@ -14,7 +15,8 @@ import { UserProfile } from './components/profile/UserProfile'
 import { SearchEngine } from './components/search/SearchEngine'
 import { LogBox } from 'react-native'
 import { View, Text } from 'react-native'
-LogBox.ignoreLogs(['Setting a timer'])
+
+LogBox.ignoreLogs(['AsyncStorage has been extracted'])
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
@@ -79,10 +81,78 @@ const RestaurantStackScreen = () => (
 )
 
 const RootTabs = () => (
-    <Tab.Navigator initialRouteName={'restaurant-stack'}>
-        <Tab.Screen name="restaurant-stack" component={RestaurantStackScreen} />
-        <Tab.Screen name="profile" component={UserProfile} />
-        <Tab.Screen name="search" component={SearchEngine} />
+    <Tab.Navigator
+        initialRouteName={'restaurant-stack'}
+        screenOptions={{
+            tabBarInactiveBackgroundColor: '#011f3b',
+            tabBarActiveBackgroundColor: '#032845',
+            tabBarInactiveTintColor: '#f8ca12',
+            tabBarActiveTintColor: '#ffffff',
+            tabBarIconStyle: { marginTop: 4 },
+            tabBarLabelStyle: {
+                fontSize: 13,
+                color: '#f8ca12',
+                paddingBottom: 3,
+            },
+            tabBarStyle: {
+                height: 55,
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 4,
+                borderTopWidth: 0,
+            },
+            style: { borderColor: '#011f3b' },
+            headerShown: false,
+            unmountOnBlur: true,
+        }}
+    >
+        <Tab.Screen
+            name="restaurant-stack"
+            component={RestaurantStackScreen}
+            options={{
+                tabBarLabel: 'Home',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="home"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="profile"
+            component={UserProfile}
+            options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="person"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="search"
+            component={SearchEngine}
+            options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="search"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
     </Tab.Navigator>
 )
 
