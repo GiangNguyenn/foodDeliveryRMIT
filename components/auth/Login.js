@@ -31,7 +31,7 @@ export class Login extends Component {
             .signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result)
-                this.props.navigation.navigate('restaurant-listing')
+                this.props.navigation.push('App')
             })
             .catch((error) => {
                 alert(error)

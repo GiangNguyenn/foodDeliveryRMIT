@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, SafeAreaView } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { getAllDocuments } from '../../backend/get'
-import { BottomTabs } from '../navigation/BottomTabs'
 import RestaurantImage from './RestaurantImage'
 import RestaurantInfo from './RestaurantInfor'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -64,11 +63,6 @@ export class RestaurantListing extends Component {
                 </View>
             </TouchableOpacity>
         ))
-        return (
-            <SafeAreaView>
-                <ScrollView>{a}</ScrollView>
-                <BottomTabs />
-            </SafeAreaView>
-        )
+        return <ScrollView>{a}</ScrollView>
     }
 }

@@ -1,15 +1,23 @@
-import React from 'react'
-import { AsyncStorage } from 'react-native'
+import React, { Component } from 'react'
+import { AsyncStorage } from '@react-native-async-storage/async-storage'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
 import Login from './components/auth/Login'
 import LandingScreen from './components/auth/Landing'
 import { SignUp } from './components/auth/Signup'
 import { RestaurantListing } from './components/restaurant/RestaurantListing'
 import { RestaurantDetail } from './components/restaurant/restaurant-detail/RestaurantDetail'
+import { UserProfile } from './components/profile/UserProfile'
+import { SearchEngine } from './components/search/SearchEngine'
 import { LogBox } from 'react-native'
-LogBox.ignoreLogs(['Setting a timer'])
+import { View, Text } from 'react-native'
+
+LogBox.ignoreLogs(['AsyncStorage has been extracted'])
+
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
     authDomain: 'rmit-canteen.firebaseapp.com',
@@ -30,41 +38,186 @@ const getCache = async (key) => {
         console.log('caught error', e)
     }
 }
-const Stack = createStackNavigator()
-export default function App() {
-    // const user = getCache('user')
-    const user = ''
-    return (
-        <NavigationContainer>
-            <Stack.Navigator
-                initialRouteName={user ? 'restaurant-listing' : 'landing'}
-            >
-                <Stack.Screen
-                    name="Landing"
-                    component={LandingScreen}
-                    options={{ headerShown: false }}
-                ></Stack.Screen>
-                <Stack.Screen
-                    name="login"
-                    component={Login}
-                    options={{ headerShown: false }}
-                ></Stack.Screen>
-                <Stack.Screen
-                    name="signup"
-                    component={SignUp}
-                    options={{ headerShown: false }}
-                ></Stack.Screen>
-                <Stack.Screen
-                    name="restaurant-listing"
-                    component={RestaurantListing}
-                    options={{ headerShown: false }}
-                ></Stack.Screen>
-                <Stack.Screen
-                    name="restaurant-detail"
-                    component={RestaurantDetail}
-                    options={{ headerShown: false }}
-                ></Stack.Screen>
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
+
+const AppStack = createStackNavigator()
+const RootStack = createStackNavigator()
+const AuthStack = createStackNavigator()
+const RestaurantStack = createStackNavigator()
+const Tab = createBottomTabNavigator()
+
+const AuthStackScreen = () => (
+    <AuthStack.Navigator initialRouteName={'Landing'}>
+        <AuthStack.Screen
+            name="Landing"
+            component={LandingScreen}
+            options={{ headerShown: false }}
+        ></AuthStack.Screen>
+        <AuthStack.Screen
+            name="login"
+            component={Login}
+            options={{ headerShown: false }}
+        ></AuthStack.Screen>
+        <AuthStack.Screen
+            name="signup"
+            component={SignUp}
+            options={{ headerShown: false }}
+        ></AuthStack.Screen>
+    </AuthStack.Navigator>
+)
+
+const RestaurantStackScreen = () => (
+    <RestaurantStack.Navigator initialRouteName={'restaurant-listing'}>
+        <RestaurantStack.Screen
+            name="restaurant-listing"
+            component={RestaurantListing}
+            options={{ headerShown: false }}
+        ></RestaurantStack.Screen>
+        <RestaurantStack.Screen
+            name="restaurant-detail"
+            component={RestaurantDetail}
+            options={{ headerShown: false }}
+        ></RestaurantStack.Screen>
+    </RestaurantStack.Navigator>
+)
+
+const RootTabs = () => (
+    <Tab.Navigator
+        initialRouteName={'restaurant-stack'}
+        screenOptions={{
+            tabBarInactiveBackgroundColor: '#011f3b',
+            tabBarActiveBackgroundColor: '#032845',
+            tabBarInactiveTintColor: '#f8ca12',
+            tabBarActiveTintColor: '#ffffff',
+            tabBarIconStyle: { marginTop: 4 },
+            tabBarLabelStyle: {
+                fontSize: 13,
+                color: '#f8ca12',
+                paddingBottom: 3,
+            },
+            tabBarStyle: {
+                height: 55,
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 4,
+                borderTopWidth: 0,
+            },
+            style: { borderColor: '#011f3b' },
+            headerShown: false,
+            unmountOnBlur: true,
+        }}
+    >
+        <Tab.Screen
+            name="restaurant-stack"
+            component={RestaurantStackScreen}
+            options={{
+                tabBarLabel: 'Home',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="home"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="profile"
+            component={UserProfile}
+            options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="person"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="search"
+            component={SearchEngine}
+            options={{
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialIcons
+                        name="search"
+                        color={color}
+                        size={29}
+                        style={{ marginTop: 1 }}
+                    />
+                ),
+            }}
+        />
+    </Tab.Navigator>
+)
+
+const AppStackScreen = () => (
+    <AppStack.Navigator initialRouteName={'root-tabs'}>
+        <AppStack.Screen
+            name="root-tabs"
+            component={RootTabs}
+            options={{ headerShown: false }}
+        ></AppStack.Screen>
+    </AppStack.Navigator>
+)
+
+export default class App extends Component {
+    constructor(props) {
+        super()
+        this.state = {
+            loaded: true,
+            loggedIn: false,
+        }
+    }
+
+    componentDidMount() {
+        firebase.auth().signInWithEmailAndPassword('bee@gmail.com', '123456')
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                this.setState({
+                    loggedIn: false,
+                    loaded: true,
+                })
+            } else {
+                console.log(user)
+                this.setState({
+                    loggedIn: true,
+                    loaded: true,
+                })
+            }
+        })
+    }
+
+    render() {
+        const { loggedIn, loaded } = this.state
+        return (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                {!loaded ? <Text>Loading</Text> : null}
+                {loggedIn ? (
+                    <NavigationContainer>
+                        <RootStack.Navigator>
+                            <RootStack.Screen
+                                name="App"
+                                component={AppStackScreen}
+                                options={{ headerShown: false }}
+                            ></RootStack.Screen>
+                        </RootStack.Navigator>
+                    </NavigationContainer>
+                ) : (
+                    <NavigationContainer>
+                        <RootStack.Screen
+                            name="Auth"
+                            component={AuthStackScreen}
+                            options={{ headerShown: false }}
+                        ></RootStack.Screen>
+                    </NavigationContainer>
+                )}
+            </View>
+        )
+    }
 }
