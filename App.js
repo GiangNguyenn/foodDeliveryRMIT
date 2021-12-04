@@ -176,6 +176,7 @@ export default class App extends Component {
     }
 
     componentDidMount() {
+        firebase.auth().signInWithEmailAndPassword('bee@gmail.com', '123456')
         firebase.auth().onAuthStateChanged((user) => {
             if (!user) {
                 this.setState({
@@ -183,6 +184,7 @@ export default class App extends Component {
                     loaded: true,
                 })
             } else {
+                console.log(user)
                 this.setState({
                     loggedIn: true,
                     loaded: true,
