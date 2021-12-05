@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { View, Text, Image, StyleSheet } from 'react-native'
 
-
 const styles = StyleSheet.create({
     titleStyle: {
         fontSize: 19,
@@ -10,7 +9,6 @@ const styles = StyleSheet.create({
     },
 })
 export function FoodInfo(props) {
-    console.log('props from food info ', props)
     return (
         <View style={{ width: 240, justifyContent: 'space-evenly' }}>
             <Text style={styles.titleStyle}>{props.food.title}</Text>

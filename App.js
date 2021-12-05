@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AsyncStorage } from '@react-native-async-storage/async-storage'
+import { AsyncStorage } from 'react-native'
 import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -15,9 +15,11 @@ import { UserProfile } from './components/profile/UserProfile'
 import { SearchEngine } from './components/search/SearchEngine'
 import { LogBox } from 'react-native'
 import { View, Text } from 'react-native'
+import { ShoppingCart } from './components/restaurant/restaurant-detail/ShoppingCart'
+import { FinishOrder } from './components/order/FinishOrder'
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted'])
-
+LogBox.ignoreLogs(['Setting a timer'])
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
     authDomain: 'rmit-canteen.firebaseapp.com',
@@ -75,6 +77,16 @@ const RestaurantStackScreen = () => (
         <RestaurantStack.Screen
             name="restaurant-detail"
             component={RestaurantDetail}
+            options={{ headerShown: false }}
+        ></RestaurantStack.Screen>
+        <RestaurantStack.Screen
+            name="restaurant-shopping-cart"
+            component={ShoppingCart}
+            options={{ headerShown: false }}
+        ></RestaurantStack.Screen>
+        <RestaurantStack.Screen
+            name="restaurant-finish-order"
+            component={FinishOrder}
             options={{ headerShown: false }}
         ></RestaurantStack.Screen>
     </RestaurantStack.Navigator>
@@ -176,7 +188,12 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        firebase.auth().signInWithEmailAndPassword('bee@gmail.com', '123456')
+        firebase
+            .auth()
+            .signInWithEmailAndPassword('bee@gmail.com', '123456')
+            .then((res) => {
+                AsyncStorage.setItem('uid', res.user.uid)
+            })
         firebase.auth().onAuthStateChanged((user) => {
             if (!user) {
                 this.setState({
@@ -184,7 +201,6 @@ export default class App extends Component {
                     loaded: true,
                 })
             } else {
-                console.log(user)
                 this.setState({
                     loggedIn: true,
                     loaded: true,
