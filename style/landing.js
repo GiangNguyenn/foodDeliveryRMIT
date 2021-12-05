@@ -16,6 +16,7 @@ export const landingPage = StyleSheet.create({
         marginRight: 30,
         marginLeft: 30,
         height: 50,
+        borderRadius: 10,
     },
     text: {
         fontSize: 16,
