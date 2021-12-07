@@ -20,6 +20,7 @@ import { FinishOrder } from './components/order/FinishOrder'
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted'])
 LogBox.ignoreLogs(['Setting a timer'])
+
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
     authDomain: 'rmit-canteen.firebaseapp.com',
@@ -188,51 +189,45 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        firebase
-            .auth()
-            .signInWithEmailAndPassword('bee@gmail.com', '123456')
-            .then((res) => {
-                AsyncStorage.setItem('uid', res.user.uid)
-            })
-        firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                this.setState({
-                    loggedIn: false,
-                    loaded: true,
-                })
-            } else {
-                this.setState({
-                    loggedIn: true,
-                    loaded: true,
-                })
-            }
+        this.fireBaseListener = firebase.auth().onAuthStateChanged((user) => {
+            user
+                ? this.setState({
+                      loggedIn: true,
+                      loaded: true,
+                  })
+                : this.setState({
+                      loggedIn: false,
+                      loaded: true,
+                  })
         })
+    }
+
+    componentWillUnmount() {
+        this.fireBaseListener && this.fireBaseListener()
     }
 
     render() {
         const { loggedIn, loaded } = this.state
+
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
-                {!loaded ? <Text>Loading</Text> : null}
-                {loggedIn ? (
-                    <NavigationContainer>
-                        <RootStack.Navigator>
+                <NavigationContainer>
+                    <RootStack.Navigator>
+                        {loggedIn ? (
                             <RootStack.Screen
-                                name="App"
+                                name="AppStack"
                                 component={AppStackScreen}
                                 options={{ headerShown: false }}
                             ></RootStack.Screen>
-                        </RootStack.Navigator>
-                    </NavigationContainer>
-                ) : (
-                    <NavigationContainer>
-                        <RootStack.Screen
-                            name="Auth"
-                            component={AuthStackScreen}
-                            options={{ headerShown: false }}
-                        ></RootStack.Screen>
-                    </NavigationContainer>
-                )}
+                        ) : (
+                            <RootStack.Screen
+                                name="AuthStack"
+                                component={AuthStackScreen}
+                                options={{ headerShown: false }}
+                            ></RootStack.Screen>
+                        )}
+                    </RootStack.Navigator>
+                </NavigationContainer>
             </View>
         )
     }
