@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
+import { ScrollView } from 'react-native-gesture-handler'
 import {
     View,
     Button,
-    TextInput,
-    Pressable,
-    SafeAreaView,
+    Input,
+    FormControl,
+    NativeBaseProvider,
     Image,
+    Heading,
     Text,
-    StyleSheet,
-    Alert,
-    AsyncStorage,
-} from 'react-native'
+    Center,
+} from 'native-base'
 import { landingPage } from '../../style/landing'
-import firebase from 'firebase'
 import { addToCollection } from '../../backend/add'
-import { ScrollView } from 'react-native-gesture-handler'
+import RMITCanteenIcon from '../utils/RMITCanteenIcon'
 
 export class SignUp extends Component {
     constructor(props) {
@@ -81,55 +81,68 @@ export class SignUp extends Component {
 
     render() {
         return (
-            <ScrollView
-                scrollEnabled
-                contentContainerStyle={landingPage.container}
-            >
-                <Image
-                    style={landingPage.canteenIcon}
-                    source={require('../../assets/RMIT/canteenIcon.png')}
-                />
+            <NativeBaseProvider>
+                <ScrollView
+                    scrollEnabled
+                    contentContainerStyle={landingPage.container}
+                >
+                    <RMITCanteenIcon />
+                    <Heading
+                        onPress={() => this.props.navigation.navigate('login')}
+                        size="2xl"
+                        style={landingPage.title}
+                    >
+                        Register Form
+                    </Heading>
+                    <Center px="3">
+                        <FormControl isRequired>
+                            <FormControl.Label>Email</FormControl.Label>
+                            <Input
+                                style={landingPage.input}
+                                placeholder="email"
+                                onChangeText={(email) =>
+                                    this.setState({ email })
+                                }
+                            />
+                            <FormControl.Label>Password</FormControl.Label>
 
-                <Text
-                    onPress={() => this.props.navigation.navigate('login')}
-                    style={landingPage.title}
-                >
-                    Register Form
-                </Text>
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="email"
-                    onChangeText={(email) => this.setState({ email })}
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="password"
-                    secureTextEntry={true}
-                    onChangeText={(password) => this.setState({ password })}
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="Confirm your password"
-                    secureTextEntry={true}
-                    onChangeText={(confirmation) =>
-                        this.setState({ confirmation })
-                    }
-                    textContentType="password"
-                />
-                <Text
-                    onPress={() => this.props.navigation.navigate('login')}
-                    style={landingPage.C2AText}
-                >
-                    Already have account? Login now!
-                </Text>
-                <Pressable
-                    style={landingPage.button}
-                    onPress={() => this.onSignUp()}
-                >
-                    <Text style={landingPage.text}>Register</Text>
-                </Pressable>
-            </ScrollView>
+                            <Input
+                                style={landingPage.input}
+                                placeholder="password"
+                                secureTextEntry={true}
+                                onChangeText={(password) =>
+                                    this.setState({ password })
+                                }
+                            />
+                            <FormControl.Label>
+                                Confirm your password
+                            </FormControl.Label>
+
+                            <Input
+                                style={landingPage.input}
+                                placeholder="Confirm your password"
+                                secureTextEntry={true}
+                                onChangeText={(confirmation) =>
+                                    this.setState({ confirmation })
+                                }
+                                textContentType="password"
+                            />
+                        </FormControl>
+                    </Center>
+                    <Text
+                        onPress={() => this.props.navigation.navigate('login')}
+                        style={landingPage.C2AText}
+                    >
+                        Already have account? Login now!
+                    </Text>
+                    <Button
+                        style={landingPage.button}
+                        onPress={() => this.onSignUp()}
+                    >
+                        <Text style={landingPage.text}>Register</Text>
+                    </Button>
+                </ScrollView>
+            </NativeBaseProvider>
         )
     }
 }
-const styles = StyleSheet.create({})
