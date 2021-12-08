@@ -3,18 +3,19 @@ import { themeColor } from '../../../style/constants'
 import Emitter from '../../services/EventEmitterService'
 
 import {
-    View,
     Text,
+    View,
+    Pressable,
     Image,
-    StyleSheet,
-    FlatList,
-    TouchableOpacity,
+    SafeAreaView,
     Button,
-    AsyncStorage,
-} from 'react-native'
+    NativeBaseProvider,
+} from 'native-base'
+import { AsyncStorage } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { landingPage } from '../../../style/landing'
 import { addToCollection } from '../../../backend/add'
+
 export function ShoppingCart(props) {
     const [inputValues, setInputValues] = useState({})
     const [amount, setAmount] = useState({})
@@ -22,6 +23,8 @@ export function ShoppingCart(props) {
     const products = props.route.params.products
     let shoppingList = {}
 
+    
+    
     useEffect(() => {
         if (products) {
             shoppingList = products.reduce((p, c) => {
@@ -54,6 +57,7 @@ export function ShoppingCart(props) {
                     <Image
                         style={{ flex: 2 }}
                         source={{ uri: products[index].images[0].url }}
+                        alt="cart"
                     />
                     <View
                         style={{
@@ -95,10 +99,11 @@ export function ShoppingCart(props) {
                                         ))
                                 )
                             }}
-                        />
+                        >
+                            -
+                        </Button>
                         <Text>{inputValues[item]}</Text>
                         <Button
-                            title={'+'}
                             onPress={() => {
                                 Emitter.emit('OUTPUT_FROM_CART', {
                                     type: true,
@@ -115,7 +120,9 @@ export function ShoppingCart(props) {
                                         ))
                                 )
                             }}
-                        />
+                        >
+                            +
+                        </Button>
                     </View>
                 </View>
             )
@@ -142,66 +149,80 @@ export function ShoppingCart(props) {
             delivery: true,
         }
         await addToCollection('order', order)
-        props.navigation.navigate('restaurant-finish-order', { order })
+        props.navigation.push('restaurant-finish-order', { order })
     }
     return (
-        <View style={{ padding: 10 }}>
-            <Text
-                style={{ paddingTop: 20, fontSize: 30, borderBottomWidth: 1 }}
-            >
-                Order Summary
-            </Text>
-            {shoppingListComponent}
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={{ flex: 3 }}> </Text>
-                <Text style={{ flex: 3, fontSize: 17 }}>
-                    Food Price: {props.route.params.total}
-                </Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={{ flex: 3 }}> </Text>
-                <Text style={{ flex: 3, fontSize: 17 }}>
-                    Booking Fee: 15000
-                </Text>
-            </View>
-            <View style={{ flexDirection: 'row', borderBottomWidth: 1 }}>
-                <Text style={{ flex: 3 }}> </Text>
-                <Text style={{ flex: 3, fontSize: 17 }}>
-                    Payment Method: COD
-                </Text>
-            </View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
+        <NativeBaseProvider>
+            <View style={{ padding: 10 }}>
                 <Text
                     style={{
-                        fontSize: 20,
-                        textAlign: 'center',
-                        padding: 10,
-                        fontWeight: 'bold',
+                        paddingTop: 20,
+                        fontSize: 30,
+                        borderBottomWidth: 1,
                     }}
                 >
-                    TOTAL PRICE: {amount + 15000}
+                    Order Summary
                 </Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    onPress={() => props.navigation.goBack(null)}
-                    style={{ ...landingPage.button, flex: 3 }}
+                {shoppingListComponent}
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ flex: 3 }}> </Text>
+                    <Text style={{ flex: 3, fontSize: 17 }}>
+                        Food Price: {props.route.params.total}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Text style={{ flex: 3 }}> </Text>
+                    <Text style={{ flex: 3, fontSize: 17 }}>
+                        Booking Fee: 15000
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row', borderBottomWidth: 1 }}>
+                    <Text style={{ flex: 3 }}> </Text>
+                    <Text style={{ flex: 3, fontSize: 17 }}>
+                        Payment Method: COD
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
                 >
-                    <Text style={landingPage.text}> Return </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ ...landingPage.button, flex: 3 }}
-                    onPress={() => onConfirm()}
-                >
-                    <Text style={landingPage.text}> Confirm </Text>
-                </TouchableOpacity>
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            textAlign: 'center',
+                            padding: 10,
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        TOTAL PRICE: {amount + 15000}
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <Button
+                        onPress={() => props.navigation.goBack(null)}
+                        style={{
+                            ...landingPage.button,
+                            flex: 3,
+                            height: '50%',
+                        }}
+                    >
+                        <Text style={landingPage.text}> Return </Text>
+                    </Button>
+                    <Button
+                        style={{
+                            ...landingPage.button,
+                            flex: 3,
+                            height: '50%',
+                        }}
+                        onPress={() => onConfirm()}
+                    >
+                        <Text style={landingPage.text}> Confirm </Text>
+                    </Button>
+                </View>
             </View>
-        </View>
+        </NativeBaseProvider>
     )
 }

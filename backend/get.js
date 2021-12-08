@@ -18,3 +18,4 @@ export const getProducts = async (collection, id) => {
         .get()
     return snapshot.docs.map((doc) => doc.data())
 }
+

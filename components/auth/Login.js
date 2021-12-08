@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
 import {
     View,
     Button,
-    TextInput,
-    Pressable,
-    SafeAreaView,
+    Input,
+    FormControl,
+    NativeBaseProvider,
     Image,
+    Heading,
     Text,
-    StyleSheet,
-} from 'react-native'
+    Center,
+} from 'native-base'
 import { landingPage } from '../../style/landing'
-import firebase from 'firebase'
 import { themeColor } from '../../style/constants'
+import RMITCanteenIcon from '../utils/RMITCanteenIcon'
+
 export class Login extends Component {
     constructor(props) {
         super(props)
@@ -31,7 +34,6 @@ export class Login extends Component {
             .signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result)
-                this.props.navigation.push('App')
             })
             .catch((error) => {
                 alert(error)
@@ -40,52 +42,58 @@ export class Login extends Component {
 
     render() {
         return (
-            <View style={landingPage.container}>
-                <Image
-                    style={landingPage.canteenIcon}
-                    source={require('../../assets/RMIT/canteenIcon.png')}
-                />
-                <Text
-                    onPress={() => this.props.navigation.navigate('login')}
-                    style={landingPage.title}
-                >
-                    Login Form
-                </Text>
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="email"
-                    onChangeText={(email) => this.setState({ email })}
-                    textContentType="emailAddress"
-                />
-                <TextInput
-                    style={landingPage.input}
-                    placeholder="password"
-                    secureTextEntry={true}
-                    onChangeText={(password) => this.setState({ password })}
-                    textContentType="password"
-                />
+            <NativeBaseProvider>
+                <View style={landingPage.container}>
+                    <RMITCanteenIcon />
+                    <Heading
+                        style={landingPage.title}
+                        onPress={() => this.props.navigation.navigate('login')}
+                        size="2xl"
+                    >
+                        Login Form
+                    </Heading>
+                    <Center>
+                        <FormControl isRequired>
+                            <FormControl.Label>Email</FormControl.Label>
+                            <Input
+                                style={landingPage.input}
+                                placeholder="email"
+                                onChangeText={(email) =>
+                                    this.setState({ email })
+                                }
+                                textContentType="emailAddress"
+                            />
+                            <FormControl.Label>Password</FormControl.Label>
+                            <Input
+                                style={landingPage.input}
+                                placeholder="password"
+                                secureTextEntry={true}
+                                onChangeText={(password) =>
+                                    this.setState({ password })
+                                }
+                                textContentType="password"
+                            />
+                            <Text
+                                onPress={() =>
+                                    this.props.navigation.navigate('signup')
+                                }
+                                style={landingPage.C2AText}
+                            >
+                                Do not have account? Register now!
+                            </Text>
+                        </FormControl>
+                    </Center>
 
-                <Text
-                    onPress={() => this.props.navigation.navigate('signup')}
-                    style={landingPage.C2AText}
-                >
-                    Do not have account? Register now!
-                </Text>
-                <Pressable
-                    style={landingPage.button}
-                    onPress={() => this.onSignUp()}
-                >
-                    <Text style={landingPage.text}>Log In</Text>
-                </Pressable>
-            </View>
+                    <Button
+                        style={landingPage.button}
+                        onPress={() => this.onSignUp()}
+                    >
+                        <Text style={landingPage.text}>Log In</Text>
+                    </Button>
+                </View>
+            </NativeBaseProvider>
         )
     }
 }
-const styles = StyleSheet.create({
-    registerText: {
-        color: themeColor.RMITDarkBlue,
-        padding: 5,
-    },
-})
 
 export default Login
