@@ -13,14 +13,14 @@ import firebase from 'firebase'
 
 import { landingPage } from '../../style/landing'
 import { themeColor } from '../../style/constants'
+import { FinishOrder } from '../order/FinishOrder'
 
 export class UserProfile extends Component {
+
+
     async onLogoutClick() {
-        await firebase
-            .auth()
-            .signOut()
-            .then(() => console.log('User signed out!'))
-        this.props.navigation.navigate('Landing')
+        console.log('hello')
+        await firebase.auth().signOut()
     }
     render() {
         return (
@@ -91,7 +91,7 @@ export class UserProfile extends Component {
                         </View>
                         <Button
                             style={{ ...landingPage.button, height: 50 }}
-                            onPress={this.onLogoutClick}
+                            onPress={this.onLogoutClick.bind(this)}
                         >
                             Logout
                         </Button>

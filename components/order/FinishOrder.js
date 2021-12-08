@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Button } from 'react-native'
 import { landingPage } from '../../style/landing'
 import Constants from 'expo-constants'
 export class FinishOrder extends Component {
@@ -63,9 +63,11 @@ export class FinishOrder extends Component {
                         uri: 'https://i.pinimg.com/originals/71/28/f4/7128f41b9a653cc70f522bb6f275637f.gif',
                     }}
                 />
-                <TouchableOpacity style={{ ...landingPage.button }}>
-                    <Text style={landingPage.text}> Back To Homepage </Text>
-                </TouchableOpacity>
+                <Button
+                    title="Back To Homepage"
+                    style={{ ...landingPage.button }}
+                    onPress={()=>this.props.navigation.push('Restaurant Listing')}
+                />
             </View>
         )
     }

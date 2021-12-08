@@ -11,9 +11,11 @@ import {
     Button,
     NativeBaseProvider,
 } from 'native-base'
+import { AsyncStorage } from 'react-native'
 import { Divider } from 'react-native-elements'
 import { landingPage } from '../../../style/landing'
 import { addToCollection } from '../../../backend/add'
+
 export function ShoppingCart(props) {
     const [inputValues, setInputValues] = useState({})
     const [amount, setAmount] = useState({})
@@ -21,6 +23,8 @@ export function ShoppingCart(props) {
     const products = props.route.params.products
     let shoppingList = {}
 
+    
+    
     useEffect(() => {
         if (products) {
             shoppingList = products.reduce((p, c) => {
@@ -145,7 +149,7 @@ export function ShoppingCart(props) {
             delivery: true,
         }
         await addToCollection('order', order)
-        props.navigation.navigate('restaurant-finish-order', { order })
+        props.navigation.push('restaurant-finish-order', { order })
     }
     return (
         <NativeBaseProvider>
