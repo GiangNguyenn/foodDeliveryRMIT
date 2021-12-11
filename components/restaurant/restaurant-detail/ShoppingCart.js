@@ -39,90 +39,103 @@ export function ShoppingCart(props) {
     const shoppingListComponent = Object.keys(inputValues)
         .sort()
         .map((item, index) => {
-            return (
-                <View
-                    style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        padding: 10,
-                        borderBottomColor: '#999',
-                        borderBottomWidth: 1,
-                    }}
-                    key={index}
-                >
-                    <Image
-                        style={{ flex: 2 }}
-                        source={{ uri: products[index].images[0].url }}
-                    />
+            const image = products.find((ele) => {
+                if (ele.title == item) {
+                    return ele
+                }
+            }).images[0].url
+            console.log('imageeee ', image)
+            let content = null
+            if (inputValues[item] > 0) {
+                content = (
                     <View
                         style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 2,
-                            padding: 10,
-                        }}
-                    >
-                        <Text style={{ fontWeight: '600', fontSize: 16 }}>
-                            {item}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            display: 'flex',
+                            width: '100%',
                             flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-around',
-                            flex: 2,
+                            justifyContent: 'space-between',
                             padding: 10,
+                            borderBottomColor: '#999',
+                            borderBottomWidth: 1,
                         }}
+                        key={index}
                     >
-                        <Button
-                            title={'-'}
-                            onPress={() => {
-                                Emitter.emit('OUTPUT_FROM_CART', {
-                                    type: false,
-                                    item: item,
-                                })
-                                setInputValues({
-                                    ...inputValues,
-                                    [item]: inputValues[item] - 1,
-                                })
-                                setAmount(
-                                    (amount) =>
-                                        (amount -= Number(
-                                            findProduct(item).price
-                                        ))
-                                )
+                        <Image
+                            style={{ flex: 2 }}
+                            source={{
+                                uri: image,
                             }}
                         />
-                        <Text>{inputValues[item]}</Text>
-                        <Button
-                            title={'+'}
-                            onPress={() => {
-                                Emitter.emit('OUTPUT_FROM_CART', {
-                                    type: true,
-                                    item: item,
-                                })
-                                setInputValues({
-                                    ...inputValues,
-                                    [item]: inputValues[item] + 1,
-                                })
-                                setAmount(
-                                    (amount) =>
-                                        (amount += Number(
-                                            findProduct(item).price
-                                        ))
-                                )
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 2,
+                                padding: 10,
                             }}
-                        />
+                        >
+                            <Text style={{ fontWeight: '600', fontSize: 16 }}>
+                                {item}
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around',
+                                flex: 2,
+                                padding: 10,
+                            }}
+                        >
+                            <Button
+                                title={'-'}
+                                onPress={() => {
+                                    Emitter.emit('OUTPUT_FROM_CART', {
+                                        type: false,
+                                        item: item,
+                                    })
+                                    setInputValues({
+                                        ...inputValues,
+                                        [item]: inputValues[item] - 1,
+                                    })
+                                    setAmount(
+                                        (amount) =>
+                                            (amount -= Number(
+                                                findProduct(item).price
+                                            ))
+                                    )
+                                }}
+                            />
+                            <Text>{inputValues[item]}</Text>
+                            <Button
+                                title={'+'}
+                                onPress={() => {
+                                    Emitter.emit('OUTPUT_FROM_CART', {
+                                        type: true,
+                                        item: item,
+                                    })
+                                    setInputValues({
+                                        ...inputValues,
+                                        [item]: inputValues[item] + 1,
+                                    })
+                                    setAmount(
+                                        (amount) =>
+                                            (amount += Number(
+                                                findProduct(item).price
+                                            ))
+                                    )
+                                }}
+                            />
+                        </View>
                     </View>
-                </View>
-            )
+                )
+            }
+
+            return content
         })
     const findProduct = (title) => {
         for (let item of products) {
-            if ((title = item.title)) {
+            if (title == item.title) {
                 return item
             }
         }
