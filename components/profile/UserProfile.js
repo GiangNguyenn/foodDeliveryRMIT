@@ -7,7 +7,7 @@ import {
     Image,
     Center,
     ScrollView,
-} from 'react-native'
+} from 'native-base'
 import { StyleSheet } from 'react-native'
 import firebase from 'firebase'
 

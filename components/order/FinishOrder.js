@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, TouchableOpacity } from 'react-native'
+import { Text, View, Image, TouchableOpacity, Button } from 'react-native'
 import { landingPage } from '../../style/landing'
 import Constants from 'expo-constants'
 export class FinishOrder extends Component {

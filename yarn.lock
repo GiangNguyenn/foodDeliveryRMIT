@@ -1231,6 +1231,16 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
+"@eva-design/dss@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@eva-design/dss/-/dss-1.4.0.tgz#81aa9b2bd884da4361715ee9d79dda455e728cdd"
+  integrity sha512-T0qIZrTNjXiLIFA1Rwzqledw94pWoxQKIunYw+zmSG/vMDHYn6VDEnaZSdsoNBa7HflDgzADB1Sw2qimb9VgZQ==
+
+"@eva-design/processor@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@eva-design/processor/-/processor-1.4.0.tgz#388154c96645f86cb36a00a363707db2ff0c963a"
+  integrity sha512-QEiP6i2UORPNUZQHPvrCqyy2NQcLc9gvkeiuEckfiruwi++S89/HlJKcLvraiVD8RzZ7r8b7QcAIZdvyScNW7w==
+
 "@expo/config-plugins@1.0.33":
   version "1.0.33"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-1.0.33.tgz#8ee78ea6f939f7e04606e9afa22b32139ea974a0"
@@ -3796,9 +3806,9 @@
     "@types/lodash" "*"
 
 "@types/lodash@*":
-  version "4.14.178"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
-  integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
+  version "4.14.177"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.177.tgz#f70c0d19c30fab101cad46b52be60363c43c4578"
+  integrity sha512-0fDwydE2clKe9MNfvXHBHF9WEahRuj+msTuQqOmAApNORFvhMYZKNGGJdCzuhheVjMps/ti0Ak/iJPACMaevvw==
 
 "@types/long@^4.0.1":
   version "4.0.1"
@@ -6538,6 +6548,11 @@ fbjs@^3.0.0:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.30"
 
+fecha@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/fecha/-/fecha-3.0.3.tgz#fabbd416497649a42c24d34bfa726b579203a1e2"
+  integrity sha512-6LQK/1jud/FZnfEEZJ7y81vw7ge81DNd/XEsX0hgMUjhS+QMljkb1C0czBaP7dMNRVrd5mw/J2J7qI2Nw+TWZw==
+
 file-type@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/file-type/-/file-type-9.0.0.tgz#a68d5ad07f486414dfb2c8866f73161946714a18"
@@ -7058,7 +7073,7 @@ hermes-profile-transformer@^0.0.6:
   dependencies:
     source-map "^0.7.3"
 
-hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -9226,7 +9241,7 @@ lodash.memoize@4.x:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
-lodash.merge@^4.6.2:
+lodash.merge@^4.6.1, lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
@@ -11027,6 +11042,17 @@ react-native-svg@*, react-native-svg@12.1.1:
   dependencies:
     css-select "^2.1.0"
     css-tree "^1.0.0-alpha.39"
+
+react-native-ui-kitten@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-ui-kitten/-/react-native-ui-kitten-4.4.1.tgz#12d428579d5eea1c35d840f99252d27c6b41428f"
+  integrity sha512-l3QZNKl+y4U4gcuFJYb1ozXPmIJ5ipz+cxCNwq+sWlymY3A7puvqhP9bP1T2tc1wqwR3Gpjnc9Jlnwwv1OUzsQ==
+  dependencies:
+    "@eva-design/dss" "^1.4.0"
+    "@eva-design/processor" "^1.4.0"
+    fecha "3.0.3"
+    hoist-non-react-statics "^3.2.1"
+    lodash.merge "^4.6.1"
 
 react-native-vector-icons@^9.0.0:
   version "9.0.0"
