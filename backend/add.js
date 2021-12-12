@@ -1,6 +1,5 @@
 import firebase from 'firebase'
 export const addToCollection = (collection, properties) => {
-    console.log('adding ', properties)
     return firebase
         .firestore()
         .collection(collection)

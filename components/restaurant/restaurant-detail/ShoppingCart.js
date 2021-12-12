@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import { themeColor } from '../../../style/constants'
 import Emitter from '../../services/EventEmitterService'
+import AppLoading from 'expo-app-loading'
 
 import {
     View,
@@ -18,7 +19,7 @@ import { addToCollection } from '../../../backend/add'
 export function ShoppingCart(props) {
     const [inputValues, setInputValues] = useState({})
     const [amount, setAmount] = useState({})
-
+    const [loading, setLoading] = useState(false)
     const products = props.route.params.products
     let shoppingList = {}
 
@@ -44,7 +45,6 @@ export function ShoppingCart(props) {
                     return ele
                 }
             }).images[0].url
-            console.log('imageeee ', image)
             let content = null
             if (inputValues[item] > 0) {
                 content = (
@@ -155,6 +155,9 @@ export function ShoppingCart(props) {
             delivery: true,
         }
         await addToCollection('order', order)
+        await Emitter.emit('OUTPUT_CURRENT_ORDER', {
+            order: order,
+        })
         props.navigation.navigate('restaurant-finish-order', { order })
     }
     return (

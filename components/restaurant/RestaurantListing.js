@@ -4,7 +4,9 @@ import { getAllDocuments } from '../../backend/get'
 import RestaurantImage from './RestaurantImage'
 import RestaurantInfo from './RestaurantInfor'
 import { ScrollView } from 'react-native-gesture-handler'
-
+import { SpeedDial } from 'react-native-elements'
+import Emitter from '../services/EventEmitterService'
+import { CurrentOrder } from '../order/CurrentOrder'
 export class RestaurantListing extends Component {
     _isMounted = false
 
@@ -12,6 +14,7 @@ export class RestaurantListing extends Component {
         super(props)
         this.state = {
             restaurants: [],
+            currentOrder: {},
         }
     }
     async componentDidMount() {
@@ -20,6 +23,10 @@ export class RestaurantListing extends Component {
         if (this._isMounted) {
             this.setState({ restaurants: fetchedRestaurants })
         }
+        const order = this.props.route.params.order
+        Emitter.on('OUTPUT_CURRENT_ORDER', (newValue) => {
+            this.setState({ currentOrder: newValue.order })
+        })
     }
     componentWillUnmount() {
         this._isMounted = false
