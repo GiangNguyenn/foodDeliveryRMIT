@@ -88,6 +88,7 @@ export class RestaurantDetail extends Component {
                                     total: this.state.totalPrice,
                                     restaurantName:
                                         this.props.route.params.name,
+                                    imageUrl: this.props.route.params.imageUrl,
                                 }
                             )
                         }

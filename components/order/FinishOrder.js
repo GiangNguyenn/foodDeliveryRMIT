@@ -44,7 +44,6 @@ export class FinishOrder extends Component {
                             fontWeight: 'bold',
                         }}
                     >
-                        {' '}
                         RMIT Canteen
                     </Text>
                 </View>
@@ -76,7 +75,7 @@ export class FinishOrder extends Component {
                 <TouchableOpacity
                     style={{ ...landingPage.button }}
                     onPress={() =>
-                        this.props.navigation.navigate('restaurant-listing', {
+                        this.props.navigation.navigate('Restaurant Listing', {
                             order: this.props.route.params.order,
                         })
                     }

@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react'
 import { themeColor } from '../../../style/constants'
 import Emitter from '../../services/EventEmitterService'
 import AppLoading from 'expo-app-loading'
-
+import firebase from 'firebase'
 import {
     Text,
     View,
@@ -142,7 +142,10 @@ export function ShoppingCart(props) {
         }
     }
     const onConfirm = async () => {
-        const uid = await AsyncStorage.getItem('uid')
+        const uid = firebase.auth().currentUser.uid
+        const restaurantName = props.route.params.restaurantName
+        const imageUrl = props.route.params.imageUrl
+
         var order_time = new Date().toLocaleString('en-US', {
             timeZone: 'Asia/Jakarta',
         })
@@ -154,6 +157,8 @@ export function ShoppingCart(props) {
             total_amount: amount,
             order_detail: inputValues,
             delivery: true,
+            restaurant_name: restaurantName,
+            imageUrl: imageUrl,
         }
         await addToCollection('order', order)
         await Emitter.emit('OUTPUT_CURRENT_ORDER', {

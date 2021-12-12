@@ -24,6 +24,7 @@ export const fetchWithCondition = async (
     condition,
     conditionValue
 ) => {
+    console.log('condition value ', conditionValue)
     const snapshot = await firebase
         .firestore()
         .collection(collection)
@@ -31,4 +32,14 @@ export const fetchWithCondition = async (
         .get()
         .catch((err) => console.log(err))
     return snapshot.docs.map((doc) => doc.data())
+}
+
+export const getWithDocument = async (collection, document) => {
+    const snapshot = await firebase
+        .firestore()
+        .collection(collection)
+        .doc(document)
+        .get()
+        .catch((err) => console.log(err))
+    return snapshot.data()
 }
