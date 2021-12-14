@@ -26,7 +26,7 @@ export const landingPage = StyleSheet.create({
         position: 'relative',
         display: 'flex',
         flex: 1,
-    },      
+    },
     canteenIcon: {
         marginTop: '15%',
         width: '80%',

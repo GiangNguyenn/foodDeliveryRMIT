@@ -4,21 +4,18 @@ import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
-import Login from './components/auth/Login'
-import LandingScreen from './components/auth/Landing'
-import { SignUp } from './components/auth/Signup'
-import { RestaurantListing } from './components/restaurant/RestaurantListing'
-import { RestaurantDetail } from './components/restaurant/restaurant-detail/RestaurantDetail'
-import UserProfile from './components/profile/UserProfile'
-import { SearchEngine } from './components/search/SearchEngine'
+import { getWithDocument } from './backend/get'
+
 import AuthStackScreen from './components/navigation/AuthStackScreen'
 import RootTabs from './components/navigation/RootTabs'
+import AdminStackScreen from './components/navigation/AdminStackScreen'
 
 import { LogBox } from 'react-native'
 import { View } from 'react-native'
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted'])
 LogBox.ignoreLogs(['Setting a timer'])
+LogBox.ignoreLogs(['[Unhandled promise rejection:'])
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
@@ -60,38 +57,53 @@ export default class App extends Component {
         this.state = {
             loaded: true,
             loggedIn: false,
+            isAdmin: false,
         }
     }
 
-    componentDidMount() {
-        this.fireBaseListener = firebase.auth().onAuthStateChanged((user) => {
-            user
+     componentDidMount() {
+        this.fireBaseListener = firebase.auth().currentUser
+            ?  getWithDocument('user', firebase.auth().currentUser.uid).isAdmin
                 ? this.setState({
                       loggedIn: true,
                       loaded: true,
+                      isAdmin: true,
                   })
                 : this.setState({
-                      loggedIn: false,
+                      loggedIn: true,
                       loaded: true,
+                      isAdmin: false,
                   })
-        })
+            : this.setState({
+                  loggedIn: false,
+                  loaded: true,
+                  isAdmin: false,
+              })
     }
 
-    componentWillUnmount() {
+     componentWillUnmount() {
         this.fireBaseListener && this.fireBaseListener()
     }
 
     render() {
-        const { loggedIn, loaded } = this.state
+        const { loggedIn, isAdmin } = this.state
+        // firebase.auth().signOut()
+        console.log(`this.state`, this.state)
 
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <NavigationContainer>
                     <RootStack.Navigator>
-                        {loggedIn ? (
+                        {loggedIn && isAdmin ? (
                             <RootStack.Screen
                                 name="AppStack"
                                 component={AppStackScreen}
+                                options={{ headerShown: false }}
+                            ></RootStack.Screen>
+                        ) : loggedIn && !isAdmin ? (
+                            <RootStack.Screen
+                                name="AppStack"
+                                component={AdminStackScreen}
                                 options={{ headerShown: false }}
                             ></RootStack.Screen>
                         ) : (
