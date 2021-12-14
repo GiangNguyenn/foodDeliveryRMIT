@@ -33,6 +33,7 @@ export class UserProfile extends Component {
     render() {
         const { user } = this.state
         return this.state.isReady ? (
+
             <NativeBaseProvider>
                 <ScrollView
                     _contentContainerStyle={{
@@ -120,6 +121,7 @@ export class UserProfile extends Component {
                 </ScrollView>
             </NativeBaseProvider>
         ) : null
+
     }
 }
 
@@ -178,6 +180,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 20,
         color: 'black',
+
     },
 })
 
