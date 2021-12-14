@@ -4,6 +4,13 @@ import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
+import Login from './components/auth/Login'
+import LandingScreen from './components/auth/Landing'
+import { SignUp } from './components/auth/Signup'
+import { RestaurantListing } from './components/restaurant/RestaurantListing'
+import { RestaurantDetail } from './components/restaurant/restaurant-detail/RestaurantDetail'
+import UserProfile from './components/profile/UserProfile'
+import { SearchEngine } from './components/search/SearchEngine'
 import AuthStackScreen from './components/navigation/AuthStackScreen'
 import RootTabs from './components/navigation/RootTabs'
 

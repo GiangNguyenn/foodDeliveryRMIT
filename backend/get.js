@@ -19,3 +19,27 @@ export const getProducts = async (collection, id) => {
     return snapshot.docs.map((doc) => doc.data())
 }
 
+export const fetchWithCondition = async (
+    collection,
+    condition,
+    conditionValue
+) => {
+    console.log('condition value ', conditionValue)
+    const snapshot = await firebase
+        .firestore()
+        .collection(collection)
+        .where(condition, '==', conditionValue)
+        .get()
+        .catch((err) => console.log(err))
+    return snapshot.docs.map((doc) => doc.data())
+}
+
+export const getWithDocument = async (collection, document) => {
+    const snapshot = await firebase
+        .firestore()
+        .collection(collection)
+        .doc(document)
+        .get()
+        .catch((err) => console.log(err))
+    return snapshot.data()
+}

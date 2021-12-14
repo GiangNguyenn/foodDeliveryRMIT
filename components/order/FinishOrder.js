@@ -44,7 +44,6 @@ export class FinishOrder extends Component {
                             fontWeight: 'bold',
                         }}
                     >
-                        {' '}
                         RMIT Canteen
                     </Text>
                 </View>
@@ -57,17 +56,32 @@ export class FinishOrder extends Component {
                 >
                     Your food is comming soon...
                 </Text>
+
                 <Image
                     style={{ width: 300, height: 200, marginBottom: 30 }}
                     source={{
                         uri: 'https://i.pinimg.com/originals/71/28/f4/7128f41b9a653cc70f522bb6f275637f.gif',
                     }}
                 />
-                <Button
-                    title="Back To Homepage"
+                <Text
+                    style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        padding: 10,
+                    }}
+                >
+                    We will notify you when your food is ready!
+                </Text>
+                <TouchableOpacity
                     style={{ ...landingPage.button }}
-                    onPress={()=>this.props.navigation.push('Restaurant Listing')}
-                />
+                    onPress={() =>
+                        this.props.navigation.navigate('Restaurant Listing', {
+                            order: this.props.route.params.order,
+                        })
+                    }
+                >
+                    <Text style={landingPage.text}>Back To Homepage</Text>
+                </TouchableOpacity>
             </View>
         )
     }
