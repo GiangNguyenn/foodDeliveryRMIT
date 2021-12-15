@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
-import { Alert } from 'react-native';
+import { Alert } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import {
     View,
@@ -27,6 +27,7 @@ export class SignUp extends Component {
             name: '',
             phone: '',
             studentId: '',
+            isAdmin: false,
         }
         this.onSignUp = this.onSignUp.bind(this)
     }
@@ -35,13 +36,19 @@ export class SignUp extends Component {
     }
 
     async onSignUp() {
-        const { email, password, phone, name, studentId } = this.state
+        const { email, password, phone, name, studentId, isAdmin } = this.state
         if (this.isMatched()) {
             await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
-                    addToCollection('user', { email, phone, name, studentId })
+                    addToCollection('user', {
+                        email,
+                        phone,
+                        name,
+                        studentId,
+                        isAdmin,
+                    })
                     Alert.alert(
                         'resgister',
                         'User account created & signed in!',

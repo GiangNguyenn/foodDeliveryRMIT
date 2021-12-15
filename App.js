@@ -61,30 +61,37 @@ export default class App extends Component {
         }
     }
 
-    componentDidMount() {
-        this.fireBaseListener = firebase.auth().onAuthStateChanged((user) =>
-            user
-                ? getWithDocument('user', firebase.auth().currentUser.uid)
-                      .isAdmin
-                    ? this.setState({
-                          loggedIn: true,
-                          loaded: true,
-                          isAdmin: true,
-                      })
-                    : this.setState({
-                          loggedIn: true,
-                          loaded: true,
-                          isAdmin: false,
-                      })
-                : this.setState({
-                      loggedIn: false,
-                      loaded: true,
-                      isAdmin: false,
-                  })
-        )
+    async componentDidMount() {
+        this.fireBaseListener = firebase
+            .auth()
+            .onAuthStateChanged(async (user) => {
+                if (user) {
+                    const currentUser = await getWithDocument(
+                        'user',
+                        firebase.auth().currentUser.uid
+                    )
+                    currentUser?.isAdmin === true
+                        ? this.setState({
+                              loggedIn: true,
+                              loaded: true,
+                              isAdmin: true,
+                          })
+                        : this.setState({
+                              loggedIn: true,
+                              loaded: true,
+                              isAdmin: false,
+                          })
+                } else {
+                    this.setState({
+                        loggedIn: false,
+                        loaded: true,
+                        isAdmin: false,
+                    })
+                }
+            })
     }
 
-    componentWillUnmount() {
+    async componentWillUnmount() {
         this.fireBaseListener && this.fireBaseListener()
     }
 
