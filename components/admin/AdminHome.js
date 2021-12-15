@@ -4,6 +4,9 @@ import { View, Text, Center, Button, NativeBaseProvider } from 'native-base'
 
 import { landingPage } from '../../style/landing'
 
+const handleLogOut = async () => {
+    await firebase.auth().signOut()
+}
 function AdminHome() {
     return (
         <NativeBaseProvider>
@@ -12,10 +15,7 @@ function AdminHome() {
                     <Text>This is RMIT Canteen Managment Dashboard</Text>
                 </Center>
 
-                <Button
-                    style={landingPage.button}
-                    onPress={() => console.log(firebase.auth().signOut())}
-                >
+                <Button style={landingPage.button} onPress={handleLogOut}>
                     Log out
                 </Button>
             </View>

@@ -61,27 +61,30 @@ export default class App extends Component {
         }
     }
 
-     componentDidMount() {
-        this.fireBaseListener = firebase.auth().currentUser
-            ?  getWithDocument('user', firebase.auth().currentUser.uid).isAdmin
-                ? this.setState({
-                      loggedIn: true,
-                      loaded: true,
-                      isAdmin: true,
-                  })
+    componentDidMount() {
+        this.fireBaseListener = firebase.auth().onAuthStateChanged((user) =>
+            user
+                ? getWithDocument('user', firebase.auth().currentUser.uid)
+                      .isAdmin
+                    ? this.setState({
+                          loggedIn: true,
+                          loaded: true,
+                          isAdmin: true,
+                      })
+                    : this.setState({
+                          loggedIn: true,
+                          loaded: true,
+                          isAdmin: false,
+                      })
                 : this.setState({
-                      loggedIn: true,
+                      loggedIn: false,
                       loaded: true,
                       isAdmin: false,
                   })
-            : this.setState({
-                  loggedIn: false,
-                  loaded: true,
-                  isAdmin: false,
-              })
+        )
     }
 
-     componentWillUnmount() {
+    componentWillUnmount() {
         this.fireBaseListener && this.fireBaseListener()
     }
 
@@ -94,18 +97,20 @@ export default class App extends Component {
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <NavigationContainer>
                     <RootStack.Navigator>
-                        {loggedIn && isAdmin ? (
-                            <RootStack.Screen
-                                name="AppStack"
-                                component={AppStackScreen}
-                                options={{ headerShown: false }}
-                            ></RootStack.Screen>
-                        ) : loggedIn && !isAdmin ? (
-                            <RootStack.Screen
-                                name="AppStack"
-                                component={AdminStackScreen}
-                                options={{ headerShown: false }}
-                            ></RootStack.Screen>
+                        {loggedIn ? (
+                            !isAdmin ? (
+                                <RootStack.Screen
+                                    name="AppStack"
+                                    component={AppStackScreen}
+                                    options={{ headerShown: false }}
+                                ></RootStack.Screen>
+                            ) : (
+                                <RootStack.Screen
+                                    name="AdminStack"
+                                    component={AdminStackScreen}
+                                    options={{ headerShown: false }}
+                                ></RootStack.Screen>
+                            )
                         ) : (
                             <RootStack.Screen
                                 name="AuthStack"
