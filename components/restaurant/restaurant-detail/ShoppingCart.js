@@ -24,8 +24,6 @@ export function ShoppingCart(props) {
     const products = props.route.params.products
     let shoppingList = {}
 
-    
-    
     useEffect(() => {
         if (products) {
             shoppingList = products.reduce((p, c) => {
@@ -51,7 +49,6 @@ export function ShoppingCart(props) {
             let content = null
             if (inputValues[item] > 0) {
                 content = (
-
                     <View
                         style={{
                             width: '100%',
@@ -168,7 +165,6 @@ export function ShoppingCart(props) {
             order: order,
         })
         props.navigation.navigate('restaurant-finish-order', { order })
-
     }
     return (
         <NativeBaseProvider>

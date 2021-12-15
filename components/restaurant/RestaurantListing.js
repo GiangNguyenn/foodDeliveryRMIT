@@ -23,7 +23,6 @@ export class RestaurantListing extends Component {
         if (this._isMounted) {
             this.setState({ restaurants: fetchedRestaurants })
         }
-        const order = this.props.route.params.order
         Emitter.on('OUTPUT_CURRENT_ORDER', (newValue) => {
             this.setState({ currentOrder: newValue.order })
         })

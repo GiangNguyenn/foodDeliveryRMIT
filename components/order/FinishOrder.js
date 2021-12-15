@@ -75,9 +75,7 @@ export class FinishOrder extends Component {
                 <TouchableOpacity
                     style={{ ...landingPage.button }}
                     onPress={() =>
-                        this.props.navigation.navigate('Restaurant Listing', {
-                            order: this.props.route.params.order,
-                        })
+                        this.props.navigation.navigate('Restaurant Listing')
                     }
                 >
                     <Text style={landingPage.text}>Back To Homepage</Text>

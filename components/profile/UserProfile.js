@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
 import { Text, View, Button, NativeBaseProvider, Center } from 'native-base'
 import { StyleSheet, Image, ScrollView } from 'react-native'
-import firebase from 'firebase'
 import { Tab, TabView } from 'react-native-elements'
 import { themeColor } from '../../style/constants'
 import { getWithDocument, fetchWithCondition } from '../../backend/get'
@@ -33,7 +33,6 @@ export class UserProfile extends Component {
     render() {
         const { user } = this.state
         return this.state.isReady ? (
-
             <NativeBaseProvider>
                 <ScrollView
                     _contentContainerStyle={{
@@ -101,6 +100,17 @@ export class UserProfile extends Component {
                                         Student Id: {user.sid}
                                     </Text>
                                 </View>
+                                <Center>
+                                    {/* <Button
+                                        style={{
+                                            ...landingPage.button,
+                                            height: 50,
+                                        }}
+                                        onPress={this.onLogoutClick.bind(this)}
+                                    >
+                                        Log out
+                                    </Button> */}
+                                </Center>
                             </View>
                         </TabView.Item>
                         <TabView.Item
@@ -121,7 +131,6 @@ export class UserProfile extends Component {
                 </ScrollView>
             </NativeBaseProvider>
         ) : null
-
     }
 }
 
@@ -180,7 +189,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 20,
         color: 'black',
-
     },
 })
 
