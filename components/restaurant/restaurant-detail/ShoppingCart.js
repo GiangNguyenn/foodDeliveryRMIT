@@ -154,7 +154,7 @@ export function ShoppingCart(props) {
             order_time,
             order_status: 'preparing',
             payment_method: 'COD',
-            total_amount: amount,
+            total_amount: amount + 15000,
             order_detail: inputValues,
             delivery: true,
             restaurant_name: restaurantName,

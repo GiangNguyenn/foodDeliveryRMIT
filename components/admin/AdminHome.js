@@ -16,6 +16,7 @@ function AdminHome() {
     const uid = firebase.auth().currentUser.uid
     const [restaurant, setRestaurant] = useState({})
     const [user, setUser] = useState({})
+    const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [index, setIndex] = useState(0)
     useEffect(async () => {
@@ -28,8 +29,15 @@ function AdminHome() {
             res
         )
         setRestaurant(restaurantInformation[0])
+        const items = await fetchWithCondition('order', 'restaurant_name', res)
+        console.log('itemssss ', items)
+        setOrders(items)
         setLoading(false)
     }, [])
+
+    const filterOrders = (condition) => {
+        return orders.filter((item) => item.order_status == condition)
+    }
 
     return !loading ? (
         <NativeBaseProvider>
@@ -77,7 +85,10 @@ function AdminHome() {
                 </Tab>
                 <TabView value={index} onChange={(e) => setIndex(e)}>
                     <TabView.Item>
-                        <ConfirmOrder />
+                        <ConfirmOrder
+                            name={restaurant.name}
+                            orders={filterOrders('preparing')}
+                        />
                     </TabView.Item>
                     <TabView.Item>
                         <PreparedOrder />
@@ -88,7 +99,13 @@ function AdminHome() {
                 </TabView>
             </ScrollView>
         </NativeBaseProvider>
-    ) : null
+    ) : (
+        <NativeBaseProvider>
+            <View>
+                <Text> Loading</Text>
+            </View>
+        </NativeBaseProvider>
+    )
 }
 
 const styles = StyleSheet.create({
