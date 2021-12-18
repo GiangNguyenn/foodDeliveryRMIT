@@ -55,7 +55,6 @@ export class RestaurantDetail extends Component {
                     totalPrice: this.state.totalPrice - Number(newArr[i].price),
                 })
                 newArr.splice(i, 1)
-                console.log('delete item ', item, ' at index ', i)
                 this.setState({ selectedProducts: newArr })
                 return
             }

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, Dimensions } from 'react-native'
 import { ListItem, Icon, Overlay, Button } from 'react-native-elements'
+import { updateDocument } from '../../backend/update'
 import UserOrderHistoryDetail from '../profile/UserOrderHistoryDetail'
 import CustomerShortInformation from './CustomerShortInformation'
 function ConfirmOrder(props) {
-    const { orders } = props
+    const { orders, endStatus } = props
     const [visible, setVisible] = useState(false)
     const [uid, setUid] = useState('')
+    const handleConfirmOrder = (id) => {
+        updateDocument('order', id, { order_status: endStatus })
+    }
     return (
         <View
             style={{
@@ -45,6 +49,7 @@ function ConfirmOrder(props) {
                         containerStyle={{ borderWidth: 0 }}
                         buttons={[
                             <Button
+                                onPress={() => handleConfirmOrder(item.ref)}
                                 icon={
                                     <Icon
                                         name="check"

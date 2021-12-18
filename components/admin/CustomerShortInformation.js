@@ -13,7 +13,6 @@ function CustomerShortInformation(props) {
         const data = await getWithDocument('user', uid)
         setUser(data)
         setLoading(false)
-        console.log(user)
     }, [loading])
     return !loading ? (
         <View

@@ -43,34 +43,10 @@ export const getWithDocument = async (collection, document) => {
     return snapshot.data()
 }
 
-export const getRealTimeDocChangeWithCondition = async (
-    collection,
-    condition,
-    conditionValue
-) => {
-    const observer = db
-        .collection(collection)
-        .where(condition, '==', conditionValue)
-        .onSnapshot((querySnapshot) => {
-            querySnapshot.docChanges().forEach((change) => {
-                return change.doc.data()
-            })
-        })
-}
-
-export const getDataWithMultipleConditions = async (
-    collection,
-    cond1,
-    condval1,
-    cond2,
-    conval2
-) => {
-    const snapshot = await firebase
-        .firestore()
-        .collection(collection)
-        .where(cond1, '==', condval1)
-        .where(cond2, '==', conval2)
-        .get()
-        .catch((err) => console.log(err))
-    return snapshot.docs.map((doc) => doc.data())
-}
+// export const getRealTimeDataWithCondition = (
+//     collection,
+//     condition,
+//     conditionValue
+// // ) => {
+//     return
+// // }

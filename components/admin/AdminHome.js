@@ -3,7 +3,11 @@ import { View, Text, NativeBaseProvider, Image } from 'native-base'
 import { StyleSheet, ScrollView, ImageBackground } from 'react-native'
 import firebase from 'firebase'
 import { landingPage } from '../../style/landing'
-import { fetchWithCondition, getWithDocument } from '../../backend/get'
+import {
+    fetchWithCondition,
+    getRealTimeDataWithCondition,
+    getWithDocument,
+} from '../../backend/get'
 import { themeColor } from '../../style/constants'
 import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 import { Tab, TabView } from 'react-native-elements'
@@ -29,16 +33,28 @@ function AdminHome() {
             res
         )
         setRestaurant(restaurantInformation[0])
-        const items = await fetchWithCondition('order', 'restaurant_name', res)
-        console.log('itemssss ', items)
-        setOrders(items)
         setLoading(false)
+        // real time
+        const orderInformation = firebase
+            .firestore()
+            .collection('order')
+            .where('restaurant_name', '==', res)
+            .onSnapshot((querySnapshot) => {
+                console.log('data retirmed')
+                setOrders(querySnapshot.docs.map((item) => item.data()))
+            })
+            .catch((e) => console.log(e))
     }, [])
 
     const filterOrders = (condition) => {
         return orders.filter((item) => item.order_status == condition)
     }
-
+    const calTotal = () => {
+        const items = filterOrders('paid')
+        let total = 0
+        items.forEach((item) => (total += item.total_amount))
+        return total
+    }
     return !loading ? (
         <NativeBaseProvider>
             <ScrollView
@@ -88,15 +104,25 @@ function AdminHome() {
                         <ConfirmOrder
                             name={restaurant.name}
                             orders={filterOrders('preparing')}
+                            endStatus={'confirmed'}
                         />
                     </TabView.Item>
                     <TabView.Item>
-                        <PreparedOrder />
+                        <ConfirmOrder
+                            orders={filterOrders('confirmed')}
+                            endStatus={'prepared'}
+                        />
                     </TabView.Item>
                     <TabView.Item>
-                        <PaidOrder />
+                        <ConfirmOrder
+                            orders={filterOrders('prepared')}
+                            endStatus={'paid'}
+                        />
                     </TabView.Item>
                 </TabView>
+                <View>
+                    <Text> Total Income: {calTotal()} vnd </Text>
+                </View>
             </ScrollView>
         </NativeBaseProvider>
     ) : (

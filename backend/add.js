@@ -6,7 +6,6 @@ export const addToCollection = (collection, properties) => {
         .add(properties)
         .catch((err) => console.log(err))
         .then((docRef) => {
-            console.log('docreffff ', docRef.id)
             firebase
                 .firestore()
                 .collection(collection)
