@@ -12,7 +12,6 @@ export class FinishOrder extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.order !== prevState.order) {
             this.setState({ order: nextProps.order })
-            console.log(this.state.order)
         }
     }
     render() {

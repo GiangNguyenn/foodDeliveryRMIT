@@ -98,7 +98,6 @@ export default class App extends Component {
     render() {
         const { loggedIn, isAdmin } = this.state
         // firebase.auth().signOut()
-        console.log(`this.state`, this.state)
 
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>

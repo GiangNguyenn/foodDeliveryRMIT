@@ -24,7 +24,6 @@ export const fetchWithCondition = async (
     condition,
     conditionValue
 ) => {
-    console.log('condition value ', conditionValue)
     const snapshot = await firebase
         .firestore()
         .collection(collection)
@@ -43,3 +42,11 @@ export const getWithDocument = async (collection, document) => {
         .catch((err) => console.log(err))
     return snapshot.data()
 }
+
+// export const getRealTimeDataWithCondition = (
+//     collection,
+//     condition,
+//     conditionValue
+// // ) => {
+//     return
+// // }

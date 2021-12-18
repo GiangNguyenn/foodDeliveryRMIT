@@ -1,8 +1,6 @@
-import { ListItem, Avatar, Badge } from 'react-native-elements'
+import { ListItem, Avatar, Badge, Button } from 'react-native-elements'
 import React, { Component } from 'react'
-import { Text, View, FlatList } from 'react-native'
-import { fetchWithCondition } from '../../backend/get'
-import firebase from 'firebase'
+import { View } from 'react-native'
 import { Dimensions } from 'react-native'
 import UserOrderHistoryDetail from './UserOrderHistoryDetail'
 export default class UserOrderHistory extends Component {
@@ -45,12 +43,23 @@ export default class UserOrderHistory extends Component {
                             <ListItem.Subtitle>
                                 {item.payment_method}
                             </ListItem.Subtitle>
+                            <Button
+                                icon={
+                                    <Icon
+                                        name="arrow-right"
+                                        size={15}
+                                        color="white"
+                                    />
+                                }
+                                title="Button with icon component"
+                            />
                         </ListItem.Content>
                         <Badge
                             value={item.order_status}
                             textStyle={{ color: 'white', fontWeight: 'bold' }}
                             status="success"
                         />
+
                         <UserOrderHistoryDetail data={item} />
                     </ListItem>
                 ))}
