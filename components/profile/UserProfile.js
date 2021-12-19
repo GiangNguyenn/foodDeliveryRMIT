@@ -101,15 +101,15 @@ export class UserProfile extends Component {
                                     </Text>
                                 </View>
                                 <Center>
-                                    {/* <Button
+                                    <Button
                                         style={{
                                             ...landingPage.button,
                                             height: 50,
                                         }}
-                                        onPress={this.onLogoutClick.bind(this)}
+                                        onPress={() => this.onLogoutClick()}
                                     >
                                         Log out
-                                    </Button> */}
+                                    </Button>
                                 </Center>
                             </View>
                         </TabView.Item>
