@@ -58,7 +58,7 @@ function AdminHome() {
     return !loading ? (
         <NativeBaseProvider>
             <ScrollView
-                _contentContainerStyle={{
+                contentContainerStyle={{
                     mb: '4',
                     minW: '72',
                     flex: 1,

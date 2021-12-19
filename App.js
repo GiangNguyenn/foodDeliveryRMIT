@@ -8,7 +8,7 @@ import { getWithDocument } from './backend/get'
 
 import AuthStackScreen from './components/navigation/AuthStackScreen'
 import RootTabs from './components/navigation/RootTabs'
-import AdminStackScreen from './components/navigation/AdminStackScreen'
+import AdminTabs from './components/navigation/AdminTabs'
 
 import { LogBox } from 'react-native'
 import { View } from 'react-native'
@@ -46,6 +46,16 @@ const AppStackScreen = () => (
         <AppStack.Screen
             name="root-tabs"
             component={RootTabs}
+            options={{ headerShown: false }}
+        ></AppStack.Screen>
+    </AppStack.Navigator>
+)
+
+const AdminStackScreen = () => (
+    <AppStack.Navigator initialRouteName={'admin-tabs'}>
+        <AppStack.Screen
+            name="admin-tabs"
+            component={AdminTabs}
             options={{ headerShown: false }}
         ></AppStack.Screen>
     </AppStack.Navigator>
