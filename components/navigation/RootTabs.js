@@ -4,25 +4,25 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import { themeColor } from '../../style/constants'
 import { UserProfile } from '../profile/UserProfile'
-import { SearchEngine } from '../search/SearchEngine'
+import SearchStackScreen from './SearchStackScreen'
 import RestaurantStackScreen from './RestaurantStackScreen'
 
 const Tab = createBottomTabNavigator()
 
-export default function RootTabs() {
+export default function RootTabs () {
     return (
         <Tab.Navigator
             initialRouteName={'restaurant-stack'}
             screenOptions={screenOptions}
         >
             <Tab.Screen
-                name="restaurant-stack"
+                name='restaurant-stack'
                 component={RestaurantStackScreen}
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialIcons
-                            name="home"
+                            name='home'
                             color={color}
                             size={29}
                             style={{ marginTop: 1 }}
@@ -31,13 +31,13 @@ export default function RootTabs() {
                 }}
             />
             <Tab.Screen
-                name="profile"
+                name='profile'
                 component={UserProfile}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialIcons
-                            name="person"
+                            name='person'
                             color={color}
                             size={29}
                             style={{ marginTop: 1 }}
@@ -46,13 +46,13 @@ export default function RootTabs() {
                 }}
             />
             <Tab.Screen
-                name="search"
-                component={SearchEngine}
+                name='search'
+                component={SearchStackScreen}
                 options={{
                     tabBarLabel: 'Search',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialIcons
-                            name="search"
+                            name='search'
                             color={color}
                             size={29}
                             style={{ marginTop: 1 }}

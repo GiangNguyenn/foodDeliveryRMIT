@@ -17,7 +17,7 @@ import { Divider } from 'react-native-elements'
 import { landingPage } from '../../../style/landing'
 import { addToCollection } from '../../../backend/add'
 
-export function ShoppingCart(props) {
+export function ShoppingCart (props) {
     const [inputValues, setInputValues] = useState({})
     const [amount, setAmount] = useState({})
     const [loading, setLoading] = useState(false)
@@ -41,7 +41,7 @@ export function ShoppingCart(props) {
     const shoppingListComponent = Object.keys(inputValues)
         .sort()
         .map((item, index) => {
-            const image = products.find((ele) => {
+            const image = products.find(ele => {
                 if (ele.title == item) {
                     return ele
                 }
@@ -89,7 +89,6 @@ export function ShoppingCart(props) {
                             }}
                         >
                             <Button
-                                title={'-'}
                                 onPress={() => {
                                     Emitter.emit('OUTPUT_FROM_CART', {
                                         type: false,
@@ -100,13 +99,15 @@ export function ShoppingCart(props) {
                                         [item]: inputValues[item] - 1,
                                     })
                                     setAmount(
-                                        (amount) =>
+                                        amount =>
                                             (amount -= Number(
                                                 findProduct(item).price
                                             ))
                                     )
                                 }}
-                            />
+                            >
+                                <Text> - </Text>
+                            </Button>
                             <Text>{inputValues[item]}</Text>
                             <Button
                                 title={'+'}
@@ -120,13 +121,15 @@ export function ShoppingCart(props) {
                                         [item]: inputValues[item] + 1,
                                     })
                                     setAmount(
-                                        (amount) =>
+                                        amount =>
                                             (amount += Number(
                                                 findProduct(item).price
                                             ))
                                     )
                                 }}
-                            />
+                            >
+                                <Text> + </Text>
+                            </Button>
                         </View>
                     </View>
                 )
@@ -134,7 +137,7 @@ export function ShoppingCart(props) {
 
             return content
         })
-    const findProduct = (title) => {
+    const findProduct = title => {
         for (let item of products) {
             if (title == item.title) {
                 return item

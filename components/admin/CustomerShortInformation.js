@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, Dimensions } from 'react-native'
+import { Text, View, Dimensions, Image } from 'react-native'
 import { Icon, Button } from 'react-native-elements'
 import { getWithDocument } from '../../backend/get'
 
-function CustomerShortInformation(props) {
+function CustomerShortInformation (props) {
     const { uid } = props
 
     const [loading, setLoading] = useState(true)
@@ -31,13 +31,19 @@ function CustomerShortInformation(props) {
                 Customer Detail
             </Text>
             {user ? (
-                Object.keys(user).map((item) => (
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text>
-                            {item}: {user[item]}
-                        </Text>
+                <View style={{ flexDirection: 'column' }}>
+                    <View style={{ alignItems: 'center' }}>
+                        <Image
+                            style={{ width: 50, height: 70 }}
+                            source={{ uri: user.imageUrl }}
+                        />
+                        <Text>{user.name}</Text>
                     </View>
-                ))
+                    <Text>Phone: {user.phone}</Text>
+                    <Text>Address: {user.address}</Text>
+                    <Text>Student ID: {user.sid}</Text>
+                    <Text>Student Email: {user.mail} </Text>
+                </View>
             ) : (
                 <View>
                     <Text> This order have no user data </Text>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Button, Text, Pressable, StyleSheet } from 'react-native'
+import { Button, Text, Pressable, View } from 'react-native'
 import { getProducts } from '../../../backend/get'
 import About from './RestaurantAbout'
 import { ProductListing } from './ProductListing'
@@ -10,7 +10,7 @@ import { landingPage } from '../../../style/landing'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Emitter from '../../services/EventEmitterService'
 export class RestaurantDetail extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             products: [],
@@ -21,33 +21,40 @@ export class RestaurantDetail extends Component {
         this.onIncrease = this.onIncrease.bind(this)
         this.onDecrease = this.onDecrease.bind(this)
     }
-    async componentDidMount() {
+    async componentDidMount () {
         const { id } = this.props.route.params
         const fetchedProducts = await getProducts('restaurant', id)
         this.setState({ products: fetchedProducts })
-        Emitter.on('OUTPUT_FROM_CART', (newValue) => {
+        Emitter.on('OUTPUT_FROM_CART', newValue => {
             if (newValue.type) this.onIncrease(newValue.item)
             if (!newValue.type) this.onDecrease(newValue.item)
         })
     }
 
-    onProductSelect(item) {
+    onProductSelect (item) {
         this.setState({
             selectedProducts: [...this.state.selectedProducts, item],
             totalPrice: (this.state.totalPrice += Number(item.price)),
         })
     }
 
-    onIncrease(item) {
+    onIncrease (item) {
         const newArr = [...this.state.selectedProducts]
-        const element = newArr.find((ele) => ele.title == item)
-        this.setState({
-            selectedProducts: [...this.state.selectedProducts, element],
-            totalPrice: this.state.totalPrice + Number(element.price),
-        })
+
+        for (let i = 0; i < newArr.length; i++) {
+            if (newArr[i].title == item) {
+                this.setState({
+                    totalPrice: this.state.totalPrice + Number(newArr[i].price),
+                })
+                newArr.push(newArr[i])
+                this.setState({ selectedProducts: newArr })
+                return
+            }
+        }
+
         return this.state.selectedProducts
     }
-    onDecrease(item) {
+    onDecrease (item) {
         const newArr = [...this.state.selectedProducts]
         for (let i = 0; i < newArr.length; i++) {
             if (newArr[i].title == item) {
@@ -61,7 +68,7 @@ export class RestaurantDetail extends Component {
         }
     }
 
-    render() {
+    render () {
         return this.props ? (
             <ScrollView stickyHeaderIndices={[4]}>
                 <About
@@ -77,27 +84,39 @@ export class RestaurantDetail extends Component {
                     onProductSelect={this.onProductSelect}
                 />
                 {this.state.selectedProducts.length > 0 ? (
-                    <Pressable
-                        style={landingPage.button}
-                        onPress={() =>
-                            this.props.navigation.navigate(
-                                'restaurant-shopping-cart',
-                                {
-                                    products: this.state.selectedProducts,
-                                    total: this.state.totalPrice,
-                                    restaurantName:
-                                        this.props.route.params.name,
-                                    imageUrl: this.props.route.params.imageUrl,
-                                }
-                            )
-                        }
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-                        <Text style={landingPage.text}>
-                            {this.state.selectedProducts.length} items || Total
-                            Price: {this.state.totalPrice} VND
-                        </Text>
-                    </Pressable>
+                        <Pressable
+                            style={{
+                                ...landingPage.button,
+                                height: 50,
+                            }}
+                            onPress={() =>
+                                this.props.navigation.navigate(
+                                    'restaurant-shopping-cart',
+                                    {
+                                        products: this.state.selectedProducts,
+                                        total: this.state.totalPrice,
+                                        restaurantName: this.props.route.params
+                                            .name,
+                                        imageUrl: this.props.route.params
+                                            .imageUrl,
+                                    }
+                                )
+                            }
+                        >
+                            <Text style={landingPage.text}>
+                                {this.state.selectedProducts.length} items ||
+                                Total Price: {this.state.totalPrice} VND
+                            </Text>
+                        </Pressable>
+                    </View>
                 ) : null}
+                <View style={{ padding: 30 }}></View>
             </ScrollView>
         ) : null
     }

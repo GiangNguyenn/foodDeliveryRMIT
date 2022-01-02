@@ -1,17 +1,17 @@
-import { ListItem, Avatar, Badge, Button } from 'react-native-elements'
+import { ListItem, Avatar, Badge, Button, Icon } from 'react-native-elements'
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { Dimensions } from 'react-native'
 import UserOrderHistoryDetail from './UserOrderHistoryDetail'
 export default class UserOrderHistory extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             orders: this.props.orders,
         }
     }
-    async componentDidMount() {}
-    render() {
+    async componentDidMount () {}
+    render () {
         const keyExtractor = (item, index) => index.toString()
 
         return (
@@ -43,21 +43,11 @@ export default class UserOrderHistory extends Component {
                             <ListItem.Subtitle>
                                 {item.payment_method}
                             </ListItem.Subtitle>
-                            <Button
-                                icon={
-                                    <Icon
-                                        name="arrow-right"
-                                        size={15}
-                                        color="white"
-                                    />
-                                }
-                                title="Button with icon component"
-                            />
                         </ListItem.Content>
                         <Badge
                             value={item.order_status}
                             textStyle={{ color: 'white', fontWeight: 'bold' }}
-                            status="success"
+                            status='success'
                         />
 
                         <UserOrderHistoryDetail data={item} />

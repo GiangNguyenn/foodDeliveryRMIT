@@ -4,22 +4,23 @@ import { Button, Overlay, ListItem, Badge } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { landingPage } from '../../style/landing'
 export default class UserOrderHistoryDetail extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             isVisible: false,
         }
         this.setVibile = this.setVibile.bind(this)
     }
-    setVibile() {
+    setVibile () {
         this.setState({ isVisible: !this.state.isVisible })
     }
 
-    render() {
+    render () {
         const { data } = this.props
+        const { title } = this.props
         const order_detail = data.order_detail
         const MealComponent = order_detail
-            ? Object.keys(order_detail).map((item) => (
+            ? Object.keys(order_detail).map(item => (
                   <Text style={{ fontSize: 14 }}>
                       {item} x {order_detail[item]}
                   </Text>
@@ -27,7 +28,19 @@ export default class UserOrderHistoryDetail extends Component {
             : null
         return (
             <View>
-                <ListItem.Chevron onPress={this.setVibile} />
+                {!title ? (
+                    <ListItem.Chevron onPress={this.setVibile} />
+                ) : (
+                    <Text
+                        style={{
+                            color: 'blue',
+                            textDecorationLine: 'underline',
+                        }}
+                        onPress={this.setVibile}
+                    >
+                        View Detail.
+                    </Text>
+                )}
                 <Overlay
                     isVisible={this.state.isVisible}
                     onBackdropPress={this.setVibile}
@@ -68,7 +81,7 @@ export default class UserOrderHistoryDetail extends Component {
                                     color: 'white',
                                     fontWeight: 'bold',
                                 }}
-                                status="success"
+                                status='success'
                                 containerStyle={{
                                     position: 'absolute',
                                     top: -4,
@@ -104,8 +117,8 @@ export default class UserOrderHistoryDetail extends Component {
                                 flex: 3,
                                 height: '50%',
                             }}
-                            title="Return"
-                            type="outline"
+                            title='Return'
+                            type='outline'
                         ></Button>
                     </View>
                 </Overlay>

@@ -10,28 +10,28 @@ import { CurrentOrder } from '../order/CurrentOrder'
 export class RestaurantListing extends Component {
     _isMounted = false
 
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             restaurants: [],
             currentOrder: {},
         }
     }
-    async componentDidMount() {
+    async componentDidMount () {
         this._isMounted = true
         const fetchedRestaurants = await getAllDocuments('restaurant')
         if (this._isMounted) {
             this.setState({ restaurants: fetchedRestaurants })
         }
-        Emitter.on('OUTPUT_CURRENT_ORDER', (newValue) => {
+        Emitter.on('OUTPUT_CURRENT_ORDER', newValue => {
             this.setState({ currentOrder: newValue.order })
         })
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
         this._isMounted = false
     }
 
-    render() {
+    render () {
         const a = this.state.restaurants.map((restaurant, index) => (
             <TouchableOpacity
                 key={index}
@@ -69,6 +69,11 @@ export class RestaurantListing extends Component {
                 </View>
             </TouchableOpacity>
         ))
-        return <ScrollView>{a}</ScrollView>
+        return (
+            <View style={{ flex: 1 }}>
+                <ScrollView>{a}</ScrollView>
+                <CurrentOrder />
+            </View>
+        )
     }
 }
