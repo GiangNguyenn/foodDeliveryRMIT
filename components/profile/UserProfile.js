@@ -5,9 +5,10 @@ import { StyleSheet, Image, ScrollView } from 'react-native'
 import { Tab, TabView } from 'react-native-elements'
 import { themeColor } from '../../style/constants'
 import { getWithDocument, fetchWithCondition } from '../../backend/get'
+import { landingPage } from '../../style/landing'
 import UserOrderHistory from './UserOrderHistory'
 export class UserProfile extends Component {
-    constructor(props) {
+    constructor (props) {
         super(props)
         this.state = {
             index: 0,
@@ -18,19 +19,24 @@ export class UserProfile extends Component {
         }
     }
 
-    async onLogoutClick() {
+    async onLogoutClick () {
         await firebase.auth().signOut()
     }
-    async componentDidMount() {
+    async componentDidMount () {
         const uid = firebase.auth().currentUser.uid
         const user = await getWithDocument('user', uid)
         if (user) {
             this.setState({ user: user, isReady: true })
         }
         const orders = await fetchWithCondition('order', 'uid', uid)
-        if (orders) this.setState({ userOrders: orders })
+        if (orders)
+            this.setState({
+                userOrders: orders.sort(function (a, b) {
+                    return new Date(b.order_time) - new Date(a.order_time)
+                }),
+            })
     }
-    render() {
+    render () {
         const { user } = this.state
         return this.state.isReady ? (
             <NativeBaseProvider>
@@ -56,14 +62,14 @@ export class UserProfile extends Component {
                     </View>
                     <Tab
                         value={this.state.index}
-                        onChange={(e) => this.setState({ index: e })}
+                        onChange={e => this.setState({ index: e })}
                     >
-                        <Tab.Item title="Information" />
-                        <Tab.Item title="Order History" />
+                        <Tab.Item title='Information' />
+                        <Tab.Item title='Order History' />
                     </Tab>
                     <TabView
                         value={this.state.index}
-                        onChange={(e) => this.setState({ index: e })}
+                        onChange={e => this.setState({ index: e })}
                     >
                         <TabView.Item>
                             <View style={{ flexDirection: 'column' }}>
@@ -71,7 +77,8 @@ export class UserProfile extends Component {
                                     <Image
                                         style={styles.icon}
                                         source={{
-                                            uri: 'https://img.icons8.com/color/70/000000/cottage.png',
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/cottage.png',
                                         }}
                                     />
                                     <Text style={styles.info}>
@@ -82,7 +89,8 @@ export class UserProfile extends Component {
                                     <Image
                                         style={styles.icon}
                                         source={{
-                                            uri: 'https://img.icons8.com/color/70/000000/administrator-male.png',
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/administrator-male.png',
                                         }}
                                     />
                                     <Text style={styles.info}>
@@ -93,24 +101,24 @@ export class UserProfile extends Component {
                                     <Image
                                         style={styles.icon}
                                         source={{
-                                            uri: 'https://img.icons8.com/color/70/000000/filled-like.png',
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/filled-like.png',
                                         }}
                                     />
                                     <Text style={styles.info}>
                                         Student Id: {user.sid}
                                     </Text>
                                 </View>
-                                <Center>
-                                    <Button
-                                        style={{
-                                            ...landingPage.button,
-                                            height: 50,
-                                        }}
-                                        onPress={() => this.onLogoutClick()}
-                                    >
-                                        Log out
-                                    </Button>
-                                </Center>
+
+                                <Button
+                                    style={{
+                                        ...landingPage.button,
+                                        height: 50,
+                                    }}
+                                    onPress={() => this.onLogoutClick()}
+                                >
+                                    Log out
+                                </Button>
                             </View>
                         </TabView.Item>
                         <TabView.Item
