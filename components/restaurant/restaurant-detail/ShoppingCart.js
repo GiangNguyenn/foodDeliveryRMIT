@@ -1,7 +1,8 @@
 import React, { Component, useState, useEffect } from 'react'
 import { themeColor } from '../../../style/constants'
 import Emitter from '../../services/EventEmitterService'
-
+import AppLoading from 'expo-app-loading'
+import firebase from 'firebase'
 import {
     Text,
     View,
@@ -16,10 +17,10 @@ import { Divider } from 'react-native-elements'
 import { landingPage } from '../../../style/landing'
 import { addToCollection } from '../../../backend/add'
 
-export function ShoppingCart(props) {
+export function ShoppingCart (props) {
     const [inputValues, setInputValues] = useState({})
     const [amount, setAmount] = useState({})
-
+    const [loading, setLoading] = useState(false)
     const products = props.route.params.products
     let shoppingList = {}
 
@@ -42,100 +43,114 @@ export function ShoppingCart(props) {
     const shoppingListComponent = Object.keys(inputValues)
         .sort()
         .map((item, index) => {
-            return (
-                <View
-                    style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        padding: 10,
-                        borderBottomColor: '#999',
-                        borderBottomWidth: 1,
-                    }}
-                    key={index}
-                >
-                    <Image
-                        style={{ flex: 2 }}
-                        source={{ uri: products[index].images[0].url }}
-                        alt="cart"
-                    />
+            const image = products.find(ele => {
+                if (ele.title == item) {
+                    return ele
+                }
+            }).images[0].url
+            let content = null
+            if (inputValues[item] > 0) {
+                content = (
                     <View
                         style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 2,
-                            padding: 10,
-                        }}
-                    >
-                        <Text style={{ fontWeight: '600', fontSize: 16 }}>
-                            {item}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            display: 'flex',
+                            width: '100%',
                             flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-around',
-                            flex: 2,
+                            justifyContent: 'space-between',
                             padding: 10,
+                            borderBottomColor: '#999',
+                            borderBottomWidth: 1,
                         }}
+                        key={index}
                     >
-                        <Button
-                            title={'-'}
-                            onPress={() => {
-                                Emitter.emit('OUTPUT_FROM_CART', {
-                                    type: false,
-                                    item: item,
-                                })
-                                setInputValues({
-                                    ...inputValues,
-                                    [item]: inputValues[item] - 1,
-                                })
-                                setAmount(
-                                    (amount) =>
-                                        (amount -= Number(
-                                            findProduct(item).price
-                                        ))
-                                )
+                        <Image
+                            style={{ flex: 2 }}
+                            source={{
+                                uri: image,
+                            }}
+                        />
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 2,
+                                padding: 10,
                             }}
                         >
-                            -
-                        </Button>
-                        <Text>{inputValues[item]}</Text>
-                        <Button
-                            onPress={() => {
-                                Emitter.emit('OUTPUT_FROM_CART', {
-                                    type: true,
-                                    item: item,
-                                })
-                                setInputValues({
-                                    ...inputValues,
-                                    [item]: inputValues[item] + 1,
-                                })
-                                setAmount(
-                                    (amount) =>
-                                        (amount += Number(
-                                            findProduct(item).price
-                                        ))
-                                )
+                            <Text style={{ fontWeight: '600', fontSize: 16 }}>
+                                {item}
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around',
+                                flex: 2,
+                                padding: 10,
                             }}
                         >
-                            +
-                        </Button>
+                            <Button
+                                onPress={() => {
+                                    Emitter.emit('OUTPUT_FROM_CART', {
+                                        type: false,
+                                        item: item,
+                                    })
+                                    setInputValues({
+                                        ...inputValues,
+                                        [item]: inputValues[item] - 1,
+                                    })
+                                    setAmount(
+                                        amount =>
+                                            (amount -= Number(
+                                                findProduct(item).price
+                                            ))
+                                    )
+                                }}
+                            >
+                                <Text> - </Text>
+                            </Button>
+                            <Text>{inputValues[item]}</Text>
+                            <Button
+                                title={'+'}
+                                onPress={() => {
+                                    Emitter.emit('OUTPUT_FROM_CART', {
+                                        type: true,
+                                        item: item,
+                                    })
+                                    setInputValues({
+                                        ...inputValues,
+                                        [item]: inputValues[item] + 1,
+                                    })
+                                    setAmount(
+                                        amount =>
+                                            (amount += Number(
+                                                findProduct(item).price
+                                            ))
+                                    )
+                                }}
+                            >
+                                <Text> + </Text>
+                            </Button>
+                        </View>
                     </View>
-                </View>
-            )
+                )
+            }
+
+            return content
         })
-    const findProduct = (title) => {
+    const findProduct = title => {
         for (let item of products) {
-            if ((title = item.title)) {
+            if (title == item.title) {
                 return item
             }
         }
     }
     const onConfirm = async () => {
-        const uid = await AsyncStorage.getItem('uid')
+        const uid = firebase.auth().currentUser.uid
+        const restaurantName = props.route.params.restaurantName
+        const imageUrl = props.route.params.imageUrl
+
         var order_time = new Date().toLocaleString('en-US', {
             timeZone: 'Asia/Jakarta',
         })
@@ -144,12 +159,17 @@ export function ShoppingCart(props) {
             order_time,
             order_status: 'preparing',
             payment_method: 'COD',
-            total_amount: amount,
+            total_amount: amount + 15000,
             order_detail: inputValues,
             delivery: true,
+            restaurant_name: restaurantName,
+            imageUrl: imageUrl,
         }
         await addToCollection('order', order)
-        props.navigation.push('restaurant-finish-order', { order })
+        await Emitter.emit('OUTPUT_CURRENT_ORDER', {
+            order: order,
+        })
+        props.navigation.navigate('restaurant-finish-order', { order })
     }
     return (
         <NativeBaseProvider>

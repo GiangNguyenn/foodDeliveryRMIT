@@ -1,1 +1,1 @@
-# foodDeliveryRMIT
+# RMIT Canteen React Native Application

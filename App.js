@@ -4,14 +4,18 @@ import * as firebase from 'firebase'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
+import { getWithDocument } from './backend/get'
+
 import AuthStackScreen from './components/navigation/AuthStackScreen'
 import RootTabs from './components/navigation/RootTabs'
+import AdminTabs from './components/navigation/AdminTabs'
 
 import { LogBox } from 'react-native'
 import { View } from 'react-native'
 
 LogBox.ignoreLogs(['AsyncStorage has been extracted'])
 LogBox.ignoreLogs(['Setting a timer'])
+LogBox.ignoreLogs(['[Unhandled promise rejection:'])
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCA-73uydGV9cFM2ha4ngUuWHNmp-byeFE',
@@ -47,27 +51,58 @@ const AppStackScreen = () => (
     </AppStack.Navigator>
 )
 
+const AdminStackScreen = () => (
+    <AppStack.Navigator initialRouteName={'admin-tabs'}>
+        <AppStack.Screen
+            name="admin-tabs"
+            component={AdminTabs}
+            options={{ headerShown: false }}
+        ></AppStack.Screen>
+    </AppStack.Navigator>
+)
+
 export default class App extends Component {
     constructor(props) {
         super()
         this.state = {
             loaded: true,
             loggedIn: false,
+            isAdmin: false,
         }
     }
 
-    componentDidMount() {
-        this.fireBaseListener = firebase.auth().onAuthStateChanged((user) => {
-            user
-                ? this.setState({
-                      loggedIn: true,
-                      loaded: true,
-                  })
-                : this.setState({
-                      loggedIn: false,
-                      loaded: true,
-                  })
-        })
+    async componentDidMount() {
+        this.fireBaseListener = firebase
+            .auth()
+            .onAuthStateChanged(async (user) => {
+                if (user) {
+                    const currentUser = await getWithDocument(
+                        'user',
+                        firebase.auth().currentUser.uid
+                    )
+                    currentUser?.isAdmin === true
+                        ? this.setState({
+                              loggedIn: true,
+                              loaded: true,
+                              isAdmin: true,
+                          })
+                        : this.setState({
+                              loggedIn: true,
+                              loaded: true,
+                              isAdmin: false,
+                          })
+                } else {
+                    this.setState({
+                        loggedIn: false,
+                        loaded: true,
+                        isAdmin: false,
+                    })
+                }
+            })
+    }
+
+    async componentWillUnmount() {
+        this.fireBaseListener && this.fireBaseListener()
     }
 
     componentWillUnmount() {
@@ -75,18 +110,27 @@ export default class App extends Component {
     }
 
     render() {
-        const { loggedIn, loaded } = this.state
+        const { loggedIn, isAdmin } = this.state
+        // firebase.auth().signOut()
 
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <NavigationContainer>
                     <RootStack.Navigator>
                         {loggedIn ? (
-                            <RootStack.Screen
-                                name="AppStack"
-                                component={AppStackScreen}
-                                options={{ headerShown: false }}
-                            ></RootStack.Screen>
+                            !isAdmin ? (
+                                <RootStack.Screen
+                                    name="AppStack"
+                                    component={AppStackScreen}
+                                    options={{ headerShown: false }}
+                                ></RootStack.Screen>
+                            ) : (
+                                <RootStack.Screen
+                                    name="AdminStack"
+                                    component={AdminStackScreen}
+                                    options={{ headerShown: false }}
+                                ></RootStack.Screen>
+                            )
                         ) : (
                             <RootStack.Screen
                                 name="AuthStack"

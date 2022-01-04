@@ -1,29 +1,44 @@
 import React, { Component } from 'react'
-import {
-    Text,
-    View,
-    Button,
-    NativeBaseProvider,
-    Image,
-    Center,
-    ScrollView,
-} from 'native-base'
-import { StyleSheet } from 'react-native'
 import firebase from 'firebase'
-
-import { landingPage } from '../../style/landing'
+import { Text, View, Button, NativeBaseProvider, Center } from 'native-base'
+import { StyleSheet, Image, ScrollView } from 'react-native'
+import { Tab, TabView } from 'react-native-elements'
 import { themeColor } from '../../style/constants'
-import { FinishOrder } from '../order/FinishOrder'
-
+import { getWithDocument, fetchWithCondition } from '../../backend/get'
+import { landingPage } from '../../style/landing'
+import UserOrderHistory from './UserOrderHistory'
 export class UserProfile extends Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            index: 0,
+            user: {},
+            userOrders: [],
+            uid: '',
+            isReady: false,
+        }
+    }
 
-
-    async onLogoutClick() {
-        console.log('hello')
+    async onLogoutClick () {
         await firebase.auth().signOut()
     }
-    render() {
-        return (
+    async componentDidMount () {
+        const uid = firebase.auth().currentUser.uid
+        const user = await getWithDocument('user', uid)
+        if (user) {
+            this.setState({ user: user, isReady: true })
+        }
+        const orders = await fetchWithCondition('order', 'uid', uid)
+        if (orders)
+            this.setState({
+                userOrders: orders.sort(function (a, b) {
+                    return new Date(b.order_time) - new Date(a.order_time)
+                }),
+            })
+    }
+    render () {
+        const { user } = this.state
+        return this.state.isReady ? (
             <NativeBaseProvider>
                 <ScrollView
                     _contentContainerStyle={{
@@ -36,69 +51,94 @@ export class UserProfile extends Component {
                             <Image
                                 style={styles.avatar}
                                 source={{
-                                    uri: 'https://bootdey.com/img/Content/avatar/avatar6.png',
+                                    uri: user.imageUrl,
                                 }}
                             />
 
-                            <Text style={styles.name}>John Doe </Text>
-                            <Text style={styles.userInfo}>
-                                jhonnydoe@mail.com{' '}
-                            </Text>
-                            <Text style={styles.userInfo}>Florida </Text>
+                            <Text style={styles.name}> {user.name} </Text>
+                            <Text style={styles.userInfo}>{user.mail}</Text>
+                            <Text style={styles.userInfo}>{user.nation} </Text>
                         </View>
                     </View>
-                    <View style={styles.body}>
-                        <View style={styles.item}>
-                            <View style={styles.iconContent}>
-                                <Image
-                                    style={styles.icon}
-                                    source={{
-                                        uri: 'https://img.icons8.com/color/70/000000/cottage.png',
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.infoContent}>
-                                <Text style={styles.info}>Home</Text>
-                            </View>
-                        </View>
+                    <Tab
+                        value={this.state.index}
+                        onChange={e => this.setState({ index: e })}
+                    >
+                        <Tab.Item title='Information' />
+                        <Tab.Item title='Order History' />
+                    </Tab>
+                    <TabView
+                        value={this.state.index}
+                        onChange={e => this.setState({ index: e })}
+                    >
+                        <TabView.Item>
+                            <View style={{ flexDirection: 'column' }}>
+                                <View style={styles.item}>
+                                    <Image
+                                        style={styles.icon}
+                                        source={{
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/cottage.png',
+                                        }}
+                                    />
+                                    <Text style={styles.info}>
+                                        Home : {user.address}
+                                    </Text>
+                                </View>
+                                <View style={styles.item}>
+                                    <Image
+                                        style={styles.icon}
+                                        source={{
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/administrator-male.png',
+                                        }}
+                                    />
+                                    <Text style={styles.info}>
+                                        Phone Number: {user.phone}
+                                    </Text>
+                                </View>
+                                <View style={styles.item}>
+                                    <Image
+                                        style={styles.icon}
+                                        source={{
+                                            uri:
+                                                'https://img.icons8.com/color/70/000000/filled-like.png',
+                                        }}
+                                    />
+                                    <Text style={styles.info}>
+                                        Student Id: {user.sid}
+                                    </Text>
+                                </View>
 
-                        <View style={styles.item}>
-                            <View style={styles.iconContent}>
-                                <Image
-                                    style={styles.icon}
-                                    source={{
-                                        uri: 'https://img.icons8.com/color/70/000000/administrator-male.png',
+                                <Button
+                                    style={{
+                                        ...landingPage.button,
+                                        height: 50,
                                     }}
-                                />
+                                    onPress={() => this.onLogoutClick()}
+                                >
+                                    Log out
+                                </Button>
                             </View>
-                            <View style={styles.infoContent}>
-                                <Text style={styles.info}>Settings</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.item}>
-                            <View style={styles.iconContent}>
-                                <Image
-                                    style={styles.icon}
-                                    source={{
-                                        uri: 'https://img.icons8.com/color/70/000000/filled-like.png',
-                                    }}
-                                />
-                            </View>
-                            <View style={styles.infoContent}>
-                                <Text style={styles.info}>News</Text>
-                            </View>
-                        </View>
-                        <Button
-                            style={{ ...landingPage.button, height: 50 }}
-                            onPress={this.onLogoutClick.bind(this)}
+                        </TabView.Item>
+                        <TabView.Item
+                            style={{
+                                width: '100%',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                            }}
                         >
-                            Logout
-                        </Button>
-                    </View>
+                            <View>
+                                <UserOrderHistory
+                                    orders={this.state.userOrders}
+                                />
+                            </View>
+                        </TabView.Item>
+                    </TabView>
                 </ScrollView>
             </NativeBaseProvider>
-        )
+        ) : null
     }
 }
 
@@ -135,6 +175,8 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
     },
     infoContent: {
         flex: 1,
@@ -154,7 +196,7 @@ const styles = StyleSheet.create({
     info: {
         fontSize: 18,
         marginTop: 20,
-        color: '#FFFFFF',
+        color: 'black',
     },
 })
 
