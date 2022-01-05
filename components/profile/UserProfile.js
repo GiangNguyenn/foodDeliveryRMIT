@@ -115,7 +115,7 @@ export class UserProfile extends Component {
                                         ...landingPage.button,
                                         height: 50,
                                     }}
-                                    onPress={() => this.onLogoutClick()}
+                                    onPress={firebase.auth().signOut()}
                                 >
                                     Log out
                                 </Button>
