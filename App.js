@@ -29,7 +29,7 @@ const firebaseConfig = {
 
 firebase.apps.length === 0 ? firebase.initializeApp(firebaseConfig) : {}
 
-const getCache = async (key) => {
+const getCache = async key => {
     try {
         let value = await AsyncStorage.getItem(key)
         return value
@@ -44,7 +44,7 @@ const RootStack = createStackNavigator()
 const AppStackScreen = () => (
     <AppStack.Navigator initialRouteName={'root-tabs'}>
         <AppStack.Screen
-            name="root-tabs"
+            name='root-tabs'
             component={RootTabs}
             options={{ headerShown: false }}
         ></AppStack.Screen>
@@ -54,7 +54,7 @@ const AppStackScreen = () => (
 const AdminStackScreen = () => (
     <AppStack.Navigator initialRouteName={'admin-tabs'}>
         <AppStack.Screen
-            name="admin-tabs"
+            name='admin-tabs'
             component={AdminTabs}
             options={{ headerShown: false }}
         ></AppStack.Screen>
@@ -62,7 +62,7 @@ const AdminStackScreen = () => (
 )
 
 export default class App extends Component {
-    constructor(props) {
+    constructor (props) {
         super()
         this.state = {
             loaded: true,
@@ -71,10 +71,10 @@ export default class App extends Component {
         }
     }
 
-    async componentDidMount() {
+    async componentDidMount () {
         this.fireBaseListener = firebase
             .auth()
-            .onAuthStateChanged(async (user) => {
+            .onAuthStateChanged(async user => {
                 if (user) {
                     const currentUser = await getWithDocument(
                         'user',
@@ -101,11 +101,11 @@ export default class App extends Component {
             })
     }
 
-    async componentWillUnmount() {
+    async componentWillUnmount () {
         this.fireBaseListener && this.fireBaseListener()
     }
 
-    render() {
+    render () {
         const { loggedIn, isAdmin } = this.state
         // firebase.auth().signOut()
 
@@ -116,20 +116,20 @@ export default class App extends Component {
                         {loggedIn ? (
                             !isAdmin ? (
                                 <RootStack.Screen
-                                    name="AppStack"
+                                    name='AppStack'
                                     component={AppStackScreen}
                                     options={{ headerShown: false }}
                                 ></RootStack.Screen>
                             ) : (
                                 <RootStack.Screen
-                                    name="AdminStack"
+                                    name='AdminStack'
                                     component={AdminStackScreen}
                                     options={{ headerShown: false }}
                                 ></RootStack.Screen>
                             )
                         ) : (
                             <RootStack.Screen
-                                name="AuthStack"
+                                name='AuthStack'
                                 component={AuthStackScreen}
                                 options={{ headerShown: false }}
                             ></RootStack.Screen>
